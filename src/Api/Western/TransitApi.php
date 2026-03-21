@@ -65,6 +65,15 @@ class TransitApi
     }
 
     /**
+     * Planetary Ingress
+     * @param array{planet: string, month: int, year: int, place: string, lat: float, lon: float, tzone: float} $params
+     */
+    public function planetaryIngress(array $params): array
+    {
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planetary-ingress', $params);
+    }
+
+    /**
      * #157 Planet Retrograde Transit (Western)
      * @param array{planet: string, month: int, year: int, place: string, lat: float, lon: float, tzone: float} $params
      */
