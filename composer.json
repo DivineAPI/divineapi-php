@@ -28,6 +28,10 @@
             "DivineApi\\Tests\\": "tests/"
         }
     },
+    "support": {
+        "issues": "https://github.com/DivineAPI/divineapi-php/issues",
+        "source": "https://github.com/DivineAPI/divineapi-php"
+    },
     "minimum-stability": "stable",
     "prefer-stable": true
 }
