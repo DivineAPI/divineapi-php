@@ -144,4 +144,13 @@ class PdfReportApi
     {
         return $this->http->post(self::HOST, '/numerology/v2/report', $params);
     }
+
+    /**
+     * Reports V2 Generate
+     * @param array Birth params + report_code + company branding params
+     */
+    public function reportsGenerate(array $params): array
+    {
+        return $this->http->post(self::HOST, '/api/v1/reports/generate', $params);
+    }
 }

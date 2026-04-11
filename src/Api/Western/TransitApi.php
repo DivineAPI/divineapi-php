@@ -52,7 +52,7 @@ class TransitApi
      */
     public function monthly(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/monthly', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/transit/monthly', $params);
     }
 
     /**
@@ -89,6 +89,22 @@ class TransitApi
     public function planetCombustionTransit(array $params): array
     {
         return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planet-combustion-transit', $params);
+    }
+
+    /**
+     * Transit Wheel Chart
+     */
+    public function wheelChart(array $params): array
+    {
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/wheel-chart', $params);
+    }
+
+    /**
+     * Transit Planetary Positions
+     */
+    public function planetaryPositions(array $params): array
+    {
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/planetary-positions', $params);
     }
 
     /**

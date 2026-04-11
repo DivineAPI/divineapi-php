@@ -45,15 +45,15 @@ class SynastryApi
      */
     public function natalWheelChart(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/natal-wheel-chart', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/synastry/natal-wheel-chart', $params);
     }
 
     /**
-     * #142 Synastry Aspect
+     * #142 Synastry Aspect Table
      */
-    public function aspect(array $params): array
+    public function aspectTable(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/aspect', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/synastry/aspect-table', $params);
     }
 
     /**

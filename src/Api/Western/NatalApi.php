@@ -53,7 +53,7 @@ class NatalApi
      */
     public function natalWheelChart(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/natal-wheel-chart', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/natal-wheel-chart', $params);
     }
 
     /**
