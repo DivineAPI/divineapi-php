@@ -127,7 +127,7 @@ class PanchangApi
 
     /**
      * #57 Find Gowri Panchangam
-     * @param array{day: int, month: int, year: int, place?: string, lat: float, lon: float, tzone: float, lan?: string} $params
+     * @param array{day: int, month: int, year: int, place: string, lat: float, lon: float, tzone: float, lan?: string} $params
      */
     public function findGowriPanchangam(array $params): array
     {
