@@ -140,4 +140,13 @@ class FestivalApi
     {
         return $this->http->post(self::HOST, '/indian-api/v1/find-festival', $params);
     }
+
+    /**
+     * #72 Malayalam Festivals
+     * @param array{year: int, place: string, lat: float, lon: float, tzone: float} $params
+     */
+    public function malayalamFestivals(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/malayalam-festivals', $params);
+    }
 }

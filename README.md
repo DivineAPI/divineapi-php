@@ -45,7 +45,7 @@ The SDK is organized into modules that mirror the Divine API structure:
 |--------|--------|-----------|
 | Horoscope & Tarot | `$client->horoscope()` | 29 |
 | Indian - Panchang | `$client->indian()->panchang()` | 28 |
-| Indian - Festivals | `$client->indian()->festival()` | 15 |
+| Indian - Festivals | `$client->indian()->festival()` | 16 |
 | Indian - Kundli | `$client->indian()->kundli()` | 38 |
 | Indian - Match Making | `$client->indian()->matchMaking()` | 8 |
 | Western - Natal | `$client->western()->natal()` | 21 |
