@@ -10,7 +10,7 @@ use DivineApi\HttpClient;
  * Indian Kundli API endpoints (astroapi-3.divineapi.com)
  *
  * Covers: Jaimini, Sub Planets, KP, Kundali Transit, Bhinnashtakvarga,
- * Dasha Analysis, and all birth-chart related endpoints.
+ * Dasha Analysis, Lal Kitab, and all birth-chart related endpoints.
  */
 class KundliApi
 {
@@ -350,5 +350,152 @@ class KundliApi
     public function sudarshanaChakra(array $params): array
     {
         return $this->http->post(self::HOST, '/indian-api/v1/sudarshana-chakra', $params);
+    }
+
+    // ─── Lal Kitab (#213-228) ───────────────────────────────────
+
+    /**
+     * #213 Lal Kitab Planetary Positions
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabPlanetaryPositions(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/planetary-positions', $params);
+    }
+
+    /**
+     * #214 Lal Kitab Horoscope Chart
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabHoroscopeChart(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/horoscope-chart', $params);
+    }
+
+    /**
+     * #215 Lal Kitab House Position
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabHousePosition(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/house-position', $params);
+    }
+
+    /**
+     * #216 Lal Kitab Conjunctions
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabConjunctions(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/conjunctions', $params);
+    }
+
+    /**
+     * #217 Lal Kitab Teva
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabTeva(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/teva', $params);
+    }
+
+    /**
+     * #218 Lal Kitab Planet Analysis
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + analysis_planet (sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu)
+     */
+    public function lalKitabPlanetAnalysis(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/planet-analysis', $params);
+    }
+
+    /**
+     * #219 Lal Kitab Dasha
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabDasha(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/dasha', $params);
+    }
+
+    /**
+     * #220 Lal Kitab Planet Types
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabPlanetTypes(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/planet-types', $params);
+    }
+
+    /**
+     * #221 Lal Kitab Mahadasha Content (no birth data needed)
+     * @param array{maha_dasha: string, lan?: string} $params
+     */
+    public function lalKitabMahadashaContent(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/mahadasha-content', $params);
+    }
+
+    /**
+     * #222 Lal Kitab Antardasha Content (no birth data needed)
+     * The antar_dasha must be valid for the chosen maha_dasha; the API lists the valid values on mismatch.
+     * @param array{maha_dasha: string, antar_dasha: string, lan?: string} $params
+     */
+    public function lalKitabAntardashaContent(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/antardasha-content', $params);
+    }
+
+    /**
+     * #223 Lal Kitab Debts
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function lalKitabDebts(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/debts', $params);
+    }
+
+    /**
+     * #224 Lal Kitab House Signification
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + house_no (1-12)
+     */
+    public function lalKitabHouseSignification(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/house-signification', $params);
+    }
+
+    /**
+     * #225 Lal Kitab Varshphal Varsha Pravesh
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year
+     */
+    public function lalKitabVarshphalVarshaPravesh(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', $params);
+    }
+
+    /**
+     * #226 Lal Kitab Varshphal Planetary Positions
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year
+     */
+    public function lalKitabVarshphalPlanetaryPositions(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/planetary-positions', $params);
+    }
+
+    /**
+     * #227 Lal Kitab Varshphal Muntha
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year
+     */
+    public function lalKitabVarshphalMuntha(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/muntha', $params);
+    }
+
+    /**
+     * #228 Lal Kitab Varshphal Chart
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year
+     */
+    public function lalKitabVarshphalChart(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/chart', $params);
     }
 }

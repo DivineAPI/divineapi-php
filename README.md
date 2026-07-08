@@ -46,7 +46,7 @@ The SDK is organized into modules that mirror the Divine API structure:
 | Horoscope & Tarot | `$client->horoscope()` | 29 |
 | Indian - Panchang | `$client->indian()->panchang()` | 28 |
 | Indian - Festivals | `$client->indian()->festival()` | 17 |
-| Indian - Kundli | `$client->indian()->kundli()` | 38 |
+| Indian - Kundli | `$client->indian()->kundli()` | 54 |
 | Indian - Match Making | `$client->indian()->matchMaking()` | 8 |
 | Western - Natal | `$client->western()->natal()` | 21 |
 | Western - Synastry | `$client->western()->synastry()` | 13 |
@@ -143,6 +143,25 @@ $result = $client->indian()->kundli()->manglikDosha($birthParams);
 $result = $client->indian()->kundli()->vimshottariDasha(
     array_merge($birthParams, ['dasha_type' => 'maha'])
 );
+
+// Lal Kitab Teva
+$result = $client->indian()->kundli()->lalKitabTeva($birthParams);
+
+// Lal Kitab Planet Analysis
+$result = $client->indian()->kundli()->lalKitabPlanetAnalysis(
+    array_merge($birthParams, ['analysis_planet' => 'sun'])
+);
+
+// Lal Kitab Varshphal Chart
+$result = $client->indian()->kundli()->lalKitabVarshphalChart(
+    array_merge($birthParams, ['varshphal_year' => 2026])
+);
+
+// Lal Kitab Mahadasha Content (no birth data needed)
+$result = $client->indian()->kundli()->lalKitabMahadashaContent([
+    'maha_dasha' => 'saturn',
+    'lan' => 'en',
+]);
 ```
 
 ### Indian API - Match Making
