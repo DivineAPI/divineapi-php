@@ -9,8 +9,10 @@ use DivineApi\HttpClient;
 /**
  * PDF Report API endpoints (pdf.divineapi.com)
  *
- * #172-184. All accept birth params + company branding params.
- * Couple reports also accept p1_*/p2_* params.
+ * #172-184. Every report REQUIRES the six company branding fields:
+ * company_name, company_url, company_email, company_bio, logo_url, footer_text
+ * (company_mobile is optional). The API returns HTTP 400 if any are missing.
+ * Couple reports also accept p1_ and p2_ prefixed birth params.
  */
 class PdfReportApi
 {
@@ -109,7 +111,8 @@ class PdfReportApi
 
     /**
      * #181 Astrology Report
-     * @param array Birth params + report_code + theme + company branding params
+     * Requires report_code (e.g. 'CAREER-REPORT'), theme (e.g. '001'), and the six branding fields.
+     * @param array Birth params + report_code + theme + 6 branding fields
      */
     public function astrologyReport(array $params): array
     {
@@ -118,7 +121,8 @@ class PdfReportApi
 
     /**
      * #182 Astrology Couple Report
-     * @param array Couple params + report_code + company branding params
+     * Requires report_code (e.g. 'ALIGNED-ENERGIES-REPORT') and the six branding fields.
+     * @param array Couple params (p1_*, p2_*) + report_code + 6 branding fields
      */
     public function astrologyCoupleReport(array $params): array
     {
@@ -129,7 +133,8 @@ class PdfReportApi
 
     /**
      * #183 Numerology Prediction Reports
-     * @param array Birth params + report_code + company branding params
+     * Requires full_name, gender, report_code (e.g. 'YEARLY-PREDICTION-3-YEAR'), and the six branding fields.
+     * @param array full_name + gender + day/month/year + report_code + 6 branding fields
      */
     public function numerologyPredictionReports(array $params): array
     {
@@ -138,7 +143,8 @@ class PdfReportApi
 
     /**
      * #184 Numerology Report
-     * @param array Birth params + report_code + company branding params
+     * Requires full_name, gender, report_code (e.g. 'SCHOLARLY-SPIRITS'), and the six branding fields.
+     * @param array full_name + gender + day/month/year + report_code + 6 branding fields
      */
     public function numerologyReport(array $params): array
     {

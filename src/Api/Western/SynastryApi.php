@@ -10,6 +10,8 @@ use DivineApi\HttpClient;
  * Western Synastry API endpoints (astroapi-4.divineapi.com)
  *
  * All accept couple params (p1_*, p2_*) + lan + house_system.
+ * house_system accepts friendly names (placidus, koch, ...) or single-letter
+ * codes (P, K, O, R, C, E, W, M, B); it is normalised to the letter code.
  */
 class SynastryApi
 {
@@ -29,7 +31,7 @@ class SynastryApi
      */
     public function planetaryPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/planetary-positions', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/synastry/planetary-positions', HouseSystem::apply($params));
     }
 
     /**
@@ -37,7 +39,7 @@ class SynastryApi
      */
     public function houseCusps(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/house-cusps', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/synastry/house-cusps', HouseSystem::apply($params));
     }
 
     /**
@@ -45,7 +47,7 @@ class SynastryApi
      */
     public function natalWheelChart(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/synastry/natal-wheel-chart', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/synastry/natal-wheel-chart', HouseSystem::apply($params));
     }
 
     /**
@@ -53,7 +55,7 @@ class SynastryApi
      */
     public function aspectTable(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/synastry/aspect-table', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/synastry/aspect-table', HouseSystem::apply($params));
     }
 
     /**
@@ -61,7 +63,7 @@ class SynastryApi
      */
     public function harmoniousAspectReading(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/harmonious-aspect-reading', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/synastry/harmonious-aspect-reading', HouseSystem::apply($params));
     }
 
     /**
@@ -69,7 +71,7 @@ class SynastryApi
      */
     public function conflictingAspectReading(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/conflicting-aspect-reading', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/synastry/conflicting-aspect-reading', HouseSystem::apply($params));
     }
 
     /**
@@ -77,7 +79,7 @@ class SynastryApi
      */
     public function contrastingAspectReading(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/contrasting-aspect-reading', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/synastry/contrasting-aspect-reading', HouseSystem::apply($params));
     }
 
     /**
@@ -85,7 +87,7 @@ class SynastryApi
      */
     public function intenseAspectReading(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/synastry/intense-aspect-reading', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/synastry/intense-aspect-reading', HouseSystem::apply($params));
     }
 
     // ─── Compatibility (#147-151) ────────────────────────────────
@@ -95,7 +97,7 @@ class SynastryApi
      */
     public function physicalCompatibility(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v2/synastry/physical-compatibility', $params);
+        return $this->http->post(self::HOST, '/western-api/v2/synastry/physical-compatibility', HouseSystem::apply($params));
     }
 
     /**
@@ -103,7 +105,7 @@ class SynastryApi
      */
     public function emotionalCompatibility(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v2/synastry/emotional-compatibility', $params);
+        return $this->http->post(self::HOST, '/western-api/v2/synastry/emotional-compatibility', HouseSystem::apply($params));
     }
 
     /**
@@ -111,7 +113,7 @@ class SynastryApi
      */
     public function sexualCompatibility(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v2/synastry/sexual-compatibility', $params);
+        return $this->http->post(self::HOST, '/western-api/v2/synastry/sexual-compatibility', HouseSystem::apply($params));
     }
 
     /**
@@ -119,7 +121,7 @@ class SynastryApi
      */
     public function spiritualCompatibility(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v2/synastry/spiritual-compatibility', $params);
+        return $this->http->post(self::HOST, '/western-api/v2/synastry/spiritual-compatibility', HouseSystem::apply($params));
     }
 
     /**
@@ -127,6 +129,6 @@ class SynastryApi
      */
     public function financialCompatibility(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v2/synastry/financial-compatibility', $params);
+        return $this->http->post(self::HOST, '/western-api/v2/synastry/financial-compatibility', HouseSystem::apply($params));
     }
 }

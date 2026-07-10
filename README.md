@@ -25,11 +25,10 @@ use DivineApi\DivineApi;
 $client = new DivineApi('your-api-key', 'your-auth-token');
 
 // Daily Horoscope
+// The reading is selected by h_day: 'today', 'tomorrow', or 'yesterday'.
 $result = $client->horoscope()->dailyHoroscope([
     'sign' => 'aries',
-    'day' => 15,
-    'month' => 3,
-    'year' => 2026,
+    'h_day' => 'today',
     'tzone' => 5.5,
     'lan' => 'en',
 ]);
@@ -66,9 +65,10 @@ The SDK is organized into modules that mirror the Divine API structure:
 
 ```php
 // Weekly Horoscope
+// week selects the period: 'current', 'prev', or 'next'.
 $result = $client->horoscope()->weeklyHoroscope([
     'sign' => 'leo',
-    'week' => 12,
+    'week' => 'current',
     'tzone' => 5.5,
     'lan' => 'en',
 ]);
@@ -203,9 +203,9 @@ $result = $client->indian()->festival()->chaitraFestivals($festivalParams);
 // Generic Hindu month festivals
 $result = $client->indian()->festival()->hinduMonthFestivals('kartika', $festivalParams);
 
-// Find specific festival
+// Find specific festival (festival is a lowercase snake_case slug from the DivineAPI festival list)
 $result = $client->indian()->festival()->findFestival(
-    array_merge($festivalParams, ['festival' => 'diwali'])
+    array_merge($festivalParams, ['festival' => 'maha_shivratri'])
 );
 ```
 
@@ -225,6 +225,8 @@ $westernBirth = [
     'lat' => 51.5074,
     'lon' => -0.1278,
     'tzone' => 0,
+    // house_system accepts a friendly name (placidus, koch, whole-sign, ...) or a
+    // single-letter code (P, K, W, ...); the SDK normalises it to the API's letter code.
     'house_system' => 'placidus',
     'lan' => 'en',
 ];
@@ -275,9 +277,9 @@ $reportParams = array_merge($birthParams, [
 // Kundali Sampoorna Report
 $result = $client->pdfReport()->kundaliSampoorna($reportParams);
 
-// Astrology Report with report code
+// Astrology Report with report code (report_code + theme are required, alongside the branding fields above)
 $result = $client->pdfReport()->astrologyReport(
-    array_merge($reportParams, ['report_code' => 'NATAL', 'theme' => 'classic'])
+    array_merge($reportParams, ['report_code' => 'CAREER-REPORT', 'theme' => '001'])
 );
 ```
 
@@ -321,7 +323,7 @@ $result = $client->lifestyle()->zodiacGiftGuru([
 ```php
 // FLAMES Calculator
 $result = $client->calculator()->flamesCalculator([
-    'full_name' => 'John',
+    'your_name' => 'John',
     'partner_name' => 'Jane',
 ]);
 

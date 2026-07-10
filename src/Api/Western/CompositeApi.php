@@ -27,7 +27,7 @@ class CompositeApi
      */
     public function planetaryPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/composite/planetary-positions', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/composite/planetary-positions', HouseSystem::apply($params));
     }
 
     /**
@@ -35,7 +35,7 @@ class CompositeApi
      */
     public function houseCusps(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/composite/house-cusps', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/composite/house-cusps', HouseSystem::apply($params));
     }
 
     /**
@@ -43,7 +43,7 @@ class CompositeApi
      */
     public function aspectTable(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/composite/aspect-table', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/composite/aspect-table', HouseSystem::apply($params));
     }
 
     /**
@@ -51,6 +51,6 @@ class CompositeApi
      */
     public function natalWheelChart(array $params): array
     {
-        return $this->http->post(self::HOST, '/western-api/v1/composite/natal-wheel-chart', $params);
+        return $this->http->post(self::HOST, '/western-api/v1/composite/natal-wheel-chart', HouseSystem::apply($params));
     }
 }

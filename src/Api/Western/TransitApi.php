@@ -26,7 +26,7 @@ class TransitApi
      */
     public function basic(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/basic', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/basic', HouseSystem::apply($params));
     }
 
     /**
@@ -34,7 +34,7 @@ class TransitApi
      */
     public function daily(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/daily', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/daily', HouseSystem::apply($params));
     }
 
     /**
@@ -43,7 +43,7 @@ class TransitApi
      */
     public function weekly(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/weekly', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/weekly', HouseSystem::apply($params));
     }
 
     /**
@@ -52,7 +52,7 @@ class TransitApi
      */
     public function monthly(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/transit/monthly', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/transit/monthly', HouseSystem::apply($params));
     }
 
     /**
@@ -61,7 +61,7 @@ class TransitApi
      */
     public function full(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/full-transit', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/full-transit', HouseSystem::apply($params));
     }
 
     /**
@@ -70,7 +70,7 @@ class TransitApi
      */
     public function planetaryIngress(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planetary-ingress', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planetary-ingress', HouseSystem::apply($params));
     }
 
     /**
@@ -79,7 +79,7 @@ class TransitApi
      */
     public function planetRetrogradeTransit(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planet-retrograde-transit', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planet-retrograde-transit', HouseSystem::apply($params));
     }
 
     /**
@@ -88,7 +88,7 @@ class TransitApi
      */
     public function planetCombustionTransit(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planet-combustion-transit', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planet-combustion-transit', HouseSystem::apply($params));
     }
 
     /**
@@ -96,7 +96,7 @@ class TransitApi
      */
     public function wheelChart(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/wheel-chart', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/wheel-chart', HouseSystem::apply($params));
     }
 
     /**
@@ -104,7 +104,7 @@ class TransitApi
      */
     public function planetaryPositions(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/planetary-positions', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/transit/planetary-positions', HouseSystem::apply($params));
     }
 
     /**
@@ -113,6 +113,6 @@ class TransitApi
      */
     public function house(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/house', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/house', HouseSystem::apply($params));
     }
 }

@@ -24,7 +24,7 @@ class CalculatorApi
 
     /**
      * #211 FLAMES Calculator
-     * @param array{full_name: string, partner_name: string} $params
+     * @param array{your_name: string, partner_name: string} $params
      */
     public function flamesCalculator(array $params): array
     {

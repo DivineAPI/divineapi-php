@@ -27,7 +27,9 @@ class HoroscopeApi
 
     /**
      * #1 Daily Horoscope
-     * @param array{sign: string, day: string|int, month: string|int, year: string|int, tzone: string|float, lan?: string} $params
+     * The reading is selected by h_day (today, tomorrow, or yesterday). The endpoint
+     * ignores day/month/year, so they are not required.
+     * @param array{sign: string, h_day: string, tzone: string|float, lan?: string} $params
      */
     public function dailyHoroscope(array $params): array
     {
@@ -36,7 +38,8 @@ class HoroscopeApi
 
     /**
      * #2 Weekly Horoscope
-     * @param array{sign: string, week: string|int, tzone: string|float, lan?: string} $params
+     * week selects the period: 'current', 'prev', or 'next' (not a date or number).
+     * @param array{sign: string, week: string, tzone: string|float, lan?: string} $params
      */
     public function weeklyHoroscope(array $params): array
     {
@@ -45,7 +48,8 @@ class HoroscopeApi
 
     /**
      * #3 Monthly Horoscope
-     * @param array{sign: string, month: string|int, tzone: string|float, lan?: string} $params
+     * month selects the period: 'current', 'prev', or 'next' (not a date or number).
+     * @param array{sign: string, month: string, tzone: string|float, lan?: string} $params
      */
     public function monthlyHoroscope(array $params): array
     {
@@ -54,7 +58,8 @@ class HoroscopeApi
 
     /**
      * #4 Yearly Horoscope
-     * @param array{sign: string, year: string|int, tzone: string|float, lan?: string} $params
+     * year selects the period: 'current', 'prev', or 'next' (not a calendar year).
+     * @param array{sign: string, year: string, tzone: string|float, lan?: string} $params
      */
     public function yearlyHoroscope(array $params): array
     {
@@ -72,6 +77,7 @@ class HoroscopeApi
 
     /**
      * #6 Numerology Horoscope
+     * day/month/year must be today's date; the endpoint only serves today, tomorrow, or yesterday.
      * @param array{number: string|int, day: string|int, month: string|int, year: string|int, tzone: string|float, lan?: string} $params
      */
     public function numerologyHoroscope(array $params): array

@@ -11,6 +11,10 @@ use DivineApi\HttpClient;
  *
  * #118-127 on astroapi-4, #128-138 on astroapi-8.
  * All accept birth params + house_system unless noted.
+ *
+ * house_system accepts friendly names (placidus, koch, porphyry, regiomontanus,
+ * campanus, equal, whole-sign, morinus, alcabitius) or single-letter codes
+ * (P, K, O, R, C, E, W, M, B); it is normalised to the letter code the API needs.
  */
 class NatalApi
 {
@@ -28,7 +32,7 @@ class NatalApi
      */
     public function planetaryPositions(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/planetary-positions', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/planetary-positions', HouseSystem::apply($params));
     }
 
     /**
@@ -36,7 +40,7 @@ class NatalApi
      */
     public function houseCusps(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/house-cusps', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/house-cusps', HouseSystem::apply($params));
     }
 
     /**
@@ -44,7 +48,7 @@ class NatalApi
      */
     public function aspectTable(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v2/aspect-table', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v2/aspect-table', HouseSystem::apply($params));
     }
 
     /**
@@ -53,7 +57,7 @@ class NatalApi
      */
     public function natalWheelChart(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/natal-wheel-chart', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v2/natal-wheel-chart', HouseSystem::apply($params));
     }
 
     /**
@@ -62,7 +66,7 @@ class NatalApi
      */
     public function generalSignReport(string $planet, array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', "/western-api/v2/general-sign-report/{$planet}", $params);
+        return $this->http->post('astroapi-4.divineapi.com', "/western-api/v2/general-sign-report/{$planet}", HouseSystem::apply($params));
     }
 
     /**
@@ -71,7 +75,7 @@ class NatalApi
      */
     public function generalHouseReport(string $planet, array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', "/western-api/v2/general-house-report/{$planet}", $params);
+        return $this->http->post('astroapi-4.divineapi.com', "/western-api/v2/general-house-report/{$planet}", HouseSystem::apply($params));
     }
 
     /**
@@ -79,7 +83,7 @@ class NatalApi
      */
     public function moonPhases(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v2/moon-phases', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v2/moon-phases', HouseSystem::apply($params));
     }
 
     /**
@@ -87,7 +91,7 @@ class NatalApi
      */
     public function ascendantReport(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v2/ascendant-report', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v2/ascendant-report', HouseSystem::apply($params));
     }
 
     /**
@@ -95,7 +99,7 @@ class NatalApi
      */
     public function moonPhaseCalendar(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/moon-phase-calendar', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/moon-phase-calendar', HouseSystem::apply($params));
     }
 
     /**
@@ -103,7 +107,7 @@ class NatalApi
      */
     public function natalInsights(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/natal-insights', $params);
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/natal-insights', HouseSystem::apply($params));
     }
 
     // ─── astroapi-8 endpoints (#128-138) ─────────────────────────
@@ -113,7 +117,7 @@ class NatalApi
      */
     public function arabicLots(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/arabic-lots', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/arabic-lots', HouseSystem::apply($params));
     }
 
     /**
@@ -121,7 +125,7 @@ class NatalApi
      */
     public function asteroidPositions(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/asteroid-positions', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/asteroid-positions', HouseSystem::apply($params));
     }
 
     /**
@@ -129,7 +133,7 @@ class NatalApi
      */
     public function fixedStarsList(array $params = []): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/fixed-stars-list', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/fixed-stars-list', HouseSystem::apply($params));
     }
 
     /**
@@ -138,7 +142,7 @@ class NatalApi
      */
     public function fixedStarsDetails(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/fixed-stars-details', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/fixed-stars-details', HouseSystem::apply($params));
     }
 
     /**
@@ -146,7 +150,7 @@ class NatalApi
      */
     public function planetaryMidpoints(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planetary-midpoints', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planetary-midpoints', HouseSystem::apply($params));
     }
 
     /**
@@ -154,7 +158,7 @@ class NatalApi
      */
     public function eclipse(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/eclipse', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/eclipse', HouseSystem::apply($params));
     }
 
     /**
@@ -162,7 +166,7 @@ class NatalApi
      */
     public function declinationsParallels(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/declinations-parallels', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/declinations-parallels', HouseSystem::apply($params));
     }
 
     /**
@@ -170,7 +174,7 @@ class NatalApi
      */
     public function aspectPatterns(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/aspect-patterns', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/aspect-patterns', HouseSystem::apply($params));
     }
 
     /**
@@ -178,7 +182,7 @@ class NatalApi
      */
     public function chartShape(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/chart-shape', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/chart-shape', HouseSystem::apply($params));
     }
 
     /**
@@ -186,7 +190,7 @@ class NatalApi
      */
     public function otherMinorBodies(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/other-minor-bodies', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/other-minor-bodies', HouseSystem::apply($params));
     }
 
     /**
@@ -195,6 +199,6 @@ class NatalApi
      */
     public function dominants(array $params): array
     {
-        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/dominants', $params);
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/dominants', HouseSystem::apply($params));
     }
 }
