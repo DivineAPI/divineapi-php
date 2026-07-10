@@ -498,4 +498,60 @@ class KundliApi
     {
         return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/chart', $params);
     }
+
+    // ─── Additional Kundli Analysis (#229-234) ──────────────────
+
+    /**
+     * #229 Vargottama Planets
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function vargottamaPlanets(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/vargottama-planets', $params);
+    }
+
+    /**
+     * #230 Bhav Bala
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function bhavBala(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/bhav-bala', $params);
+    }
+
+    /**
+     * #231 Shani Ashtam Shani
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function shaniAshtamShani(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/shani-ashtam-shani', $params);
+    }
+
+    /**
+     * #232 Bhava Analysis
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function bhavaAnalysis(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/bhava-analysis', $params);
+    }
+
+    /**
+     * #233 Bhava Group Predictions
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function bhavaGroupPredictions(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/bhava-group-predictions', $params);
+    }
+
+    /**
+     * #234 Planet Remedies
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + analysis_planet (sun, moon, mars, mercury, jupiter, venus, saturn, rahu or ketu)
+     */
+    public function planetRemedies(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/planet-remedies', $params);
+    }
 }

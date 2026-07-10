@@ -45,7 +45,7 @@ The SDK is organized into modules that mirror the Divine API structure:
 | Horoscope & Tarot | `$client->horoscope()` | 29 |
 | Indian - Panchang | `$client->indian()->panchang()` | 28 |
 | Indian - Festivals | `$client->indian()->festival()` | 17 |
-| Indian - Kundli | `$client->indian()->kundli()` | 54 |
+| Indian - Kundli | `$client->indian()->kundli()` | 60 |
 | Indian - Match Making | `$client->indian()->matchMaking()` | 8 |
 | Western - Natal | `$client->western()->natal()` | 21 |
 | Western - Synastry | `$client->western()->synastry()` | 13 |
@@ -162,6 +162,14 @@ $result = $client->indian()->kundli()->lalKitabMahadashaContent([
     'maha_dasha' => 'saturn',
     'lan' => 'en',
 ]);
+
+// Bhava Analysis
+$result = $client->indian()->kundli()->bhavaAnalysis($birthParams);
+
+// Planet Remedies (birth params + analysis_planet)
+$result = $client->indian()->kundli()->planetRemedies(
+    array_merge($birthParams, ['analysis_planet' => 'sun'])
+);
 ```
 
 ### Indian API - Match Making
