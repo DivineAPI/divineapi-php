@@ -30,6 +30,15 @@ class TransitApi
     }
 
     /**
+     * Custom Transit
+     * @param array Birth params + full transit moment (date, time, location); no house_system required
+     */
+    public function customTransit(array $params): array
+    {
+        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/transit/custom', HouseSystem::apply($params));
+    }
+
+    /**
      * #153 Daily Transit
      */
     public function daily(array $params): array

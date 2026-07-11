@@ -49,7 +49,7 @@ The SDK is organized into modules that mirror the Divine API structure:
 | Indian - Match Making | `$client->indian()->matchMaking()` | 8 |
 | Western - Natal | `$client->western()->natal()` | 21 |
 | Western - Synastry | `$client->western()->synastry()` | 13 |
-| Western - Transit | `$client->western()->transit()` | 9 |
+| Western - Transit | `$client->western()->transit()` | 10 |
 | Western - Composite | `$client->western()->composite()` | 4 |
 | Western - Planet Returns | `$client->western()->planetReturns()` | 2 |
 | Western - Progressions | `$client->western()->progressions()` | 3 |
