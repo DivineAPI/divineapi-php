@@ -554,4 +554,12 @@ class KundliApi
     {
         return $this->http->post(self::HOST, '/indian-api/v1/planet-remedies', $params);
     }
+
+    /**
+     * Rudraksh Suggestion.
+     */
+    public function rudrakshaSuggestion(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/rudraksha-suggestion', $params);
+    }
 }
