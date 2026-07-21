@@ -285,4 +285,77 @@ class PanchangApi
     {
         return $this->http->post('astroapi-8.divineapi.com', '/indian-api/v1/month-surya-nakshatra-list', $params);
     }
+
+    /**
+     * Marriage Muhurat.
+     */
+    public function muhuratMarriage(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/marriage', $params);
+    }
+
+    /**
+     * Griha Pravesh (House Entering) Muhurat.
+     */
+    public function muhuratHouseEntering(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/house-entering', $params);
+    }
+
+    /**
+     * Vehicle Purchase Muhurat.
+     */
+    public function muhuratVehiclePurchase(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/vehicle-purchase', $params);
+    }
+
+    /**
+     * Property Purchase Muhurat.
+     */
+    public function muhuratPropertyPurchase(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/property-purchase', $params);
+    }
+
+    /**
+     * Business Start Muhurat.
+     */
+    public function muhuratBusinessStart(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/business-start', $params);
+    }
+
+    /**
+     * Foundation Laying (Bhoomi Pujan) Muhurat.
+     */
+    public function muhuratFoundationLaying(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/foundation-laying', $params);
+    }
+
+    /**
+     * Do Ghati Muhurat.
+     */
+    public function muhuratDoGhati(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/do-ghati', $params);
+    }
+
+    /**
+     * Hora.
+     */
+    public function muhuratHora(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/hora', $params);
+    }
+
+    /**
+     * Jain Pachakkhan.
+     */
+    public function muhuratJainPachakkhan(array $params): array
+    {
+        return $this->http->post('astroapi-3.divineapi.com', '/indian-api/v1/muhurat/jain-pachakkhan', $params);
+    }
 }
+
