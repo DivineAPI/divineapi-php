@@ -562,4 +562,117 @@ class KundliApi
     {
         return $this->http->post(self::HOST, '/indian-api/v1/rudraksha-suggestion', $params);
     }
+
+    /**
+     * Varshphal Varsha Pravesh.
+     */
+    public function varshphalVarshaPravesh(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/varsha-pravesh', $params);
+    }
+
+    /**
+     * Varshphal Basic Astro Details.
+     */
+    public function varshphalBasicAstroDetails(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/basic-astro-details', $params);
+    }
+
+    /**
+     * Varshphal Planetary Positions.
+     */
+    public function varshphalPlanetaryPositions(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/planetary-positions', $params);
+    }
+
+    /**
+     * Varshphal Horoscope Chart (D1..D60).
+     */
+    public function varshphalHoroscopeChart(string $chartId, array $params): array
+    {
+        return $this->http->post(self::HOST, "/indian-api/v1/varshphal/horoscope-chart/{$chartId}", $params);
+    }
+
+    /**
+     * Varshphal Tajika Aspect.
+     */
+    public function varshphalTajikaAspect(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/tajika-aspect', $params);
+    }
+
+    /**
+     * Varshphal Muntha.
+     */
+    public function varshphalMuntha(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/muntha', $params);
+    }
+
+    /**
+     * Varshphal Panchadhikari.
+     */
+    public function varshphalPanchadhikari(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/panchadhikari', $params);
+    }
+
+    /**
+     * Varshphal Tri Pataki Chakra.
+     */
+    public function varshphalTriPatakiChakra(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/tri-pataki-chakra', $params);
+    }
+
+    /**
+     * Varshphal Mudda Dasha.
+     */
+    public function varshphalMuddaDasha(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/mudda-dasha', $params);
+    }
+
+    /**
+     * Varshphal Yogini Dasha.
+     */
+    public function varshphalYoginiDasha(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/yogini-dasha', $params);
+    }
+
+    /**
+     * Varshphal Patyanini Dasha.
+     */
+    public function varshphalPatyaniniDasha(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/patyanini-dasha', $params);
+    }
+
+    /**
+     * Varshphal Planetary Strengths.
+     */
+    public function varshphalPlanetaryStrengths(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/planetary-strengths', $params);
+    }
+
+    /**
+     * Varshphal Sahams.
+     */
+    public function varshphalSahams(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/sahams', $params);
+    }
+
+    /**
+     * Varshphal Yogas.
+     */
+    public function varshphalYogas(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/yogas', $params);
+    }
 }
+
