@@ -77,6 +77,18 @@ class NumerologyApi
     }
 
     /**
+     * #235 Name Correction
+     *
+     * Takes a single full_name (not fname/lname like its numerology siblings).
+     *
+     * @param array{api_key?: string, day: int, month: int, year: int, full_name: string, lan?: string} $params
+     */
+    public function nameCorrection(array $params): array
+    {
+        return $this->http->post('astroapi-7.divineapi.com', '/numerology/v1/name-correction', $params);
+    }
+
+    /**
      * #194 Birthday Number
      */
     public function birthdayNumber(array $params): array

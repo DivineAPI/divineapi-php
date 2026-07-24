@@ -55,7 +55,7 @@ The SDK is organized into modules that mirror the Divine API structure:
 | Western - Progressions | `$client->western()->progressions()` | 3 |
 | Western - Prenatal | `$client->western()->prenatal()` | 2 |
 | PDF Reports | `$client->pdfReport()` | 13 |
-| Numerology | `$client->numerology()` | 15 |
+| Numerology | `$client->numerology()` | 16 |
 | Lifestyle | `$client->lifestyle()` | 3 |
 | Calculators | `$client->calculator()` | 2 |
 
