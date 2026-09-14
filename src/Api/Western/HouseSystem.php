@@ -24,15 +24,35 @@ final class HouseSystem
         'regiomontanus' => 'R',
         'campanus'      => 'C',
         'equal'         => 'E',
+        'equal-asc'     => 'A',
+        'equal_asc'     => 'A',
+        'equal-mc'      => 'D',
+        'equal_mc'      => 'D',
+        'vehlow'        => 'V',
+        'vehlow-equal'  => 'V',
         'whole-sign'    => 'W',
         'whole_sign'    => 'W',
         'wholesign'     => 'W',
+        'meridian'      => 'X',
+        'axial-rotation' => 'X',
         'morinus'       => 'M',
+        'sripati'       => 'S',
+        'topocentric'   => 'T',
+        'polich-page'   => 'T',
         'alcabitius'    => 'B',
+        'whole-sign-aries' => 'N',
+        'whole_sign_aries' => 'N',
     ];
 
-    /** Valid single-letter codes the API accepts. */
-    private const VALID_LETTERS = ['P', 'K', 'O', 'R', 'C', 'E', 'W', 'M', 'B'];
+    /**
+     * Valid single-letter codes the API accepts. Verified 2026-09-14 against
+     * astroapi-4 /planetary-positions and astroapi-8 /persona-chart: all
+     * sixteen return success. A and E are both Equal (from Asc).
+     */
+    private const VALID_LETTERS = [
+        'P', 'K', 'O', 'R', 'C', 'A', 'E', 'D',
+        'V', 'W', 'X', 'M', 'S', 'T', 'B', 'N',
+    ];
 
     /**
      * Resolve a single house_system value to its letter code.

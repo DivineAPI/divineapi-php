@@ -201,4 +201,25 @@ class NatalApi
     {
         return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/dominants', HouseSystem::apply($params));
     }
+
+    /**
+     * #139 Persona Chart
+     *
+     * Casts the full chart for the exact moment - within the first year of
+     * life - that the transiting Sun reaches the natal degree of the chosen
+     * persona_planet.
+     *
+     * @param array $params Birth params plus persona_planet (required: sun, moon,
+     *                      mercury, venus, mars, jupiter, saturn, uranus, neptune
+     *                      or pluto). Optional: node_type (meannode|truenode),
+     *                      output_include, graphic_layout and the other chart
+     *                      appearance / aspect options.
+     *
+     * output_include defaults to "raw_data" server-side (~21 KB, data only).
+     * Image tokens are large: ~0.5 MB per SVG, and "all" returns ~4.3 MB.
+     */
+    public function personaChart(array $params): array
+    {
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/persona-chart', HouseSystem::apply($params));
+    }
 }
