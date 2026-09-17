@@ -247,6 +247,14 @@ $result = $client->western()->natal()->natalWheelChart($westernBirth);
 
 // Natal Insights
 $result = $client->western()->natal()->natalInsights($westernBirth);
+
+// Persona Chart: the chart for the moment, within the first year of life, that the
+// transiting Sun reaches the natal degree of persona_planet.
+// output_include defaults to "raw_data" (~21 KB); image tokens are ~0.5 MB per SVG
+// and output_include = "all" returns ~4.3 MB.
+$result = $client->western()->natal()->personaChart(
+    $westernBirth + ['persona_planet' => 'moon']
+);
 ```
 
 ### Western API - Synastry
