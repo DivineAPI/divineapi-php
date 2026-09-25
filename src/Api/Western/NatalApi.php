@@ -28,11 +28,17 @@ class NatalApi
     // ─── astroapi-4 endpoints (#118-127) ─────────────────────────
 
     /**
-     * #118 Planetary Positions
+     * #118 Planetary Positions (18 bodies, including Vertex)
+     *
+     * Served from astroapi-8; the older astroapi-4 version omits Vertex. The
+     * response uses the newer envelope - ['status' => 'success', 'code' => 200,
+     * 'message' => ..., 'data' => [...]] - rather than ['success' => 1, ...],
+     * and invalid input throws ValidationException (HTTP 422) instead of
+     * returning ['success' => 2]. The 'data' list is unchanged apart from Vertex.
      */
     public function planetaryPositions(array $params): array
     {
-        return $this->http->post('astroapi-4.divineapi.com', '/western-api/v1/planetary-positions', HouseSystem::apply($params));
+        return $this->http->post('astroapi-8.divineapi.com', '/western-api/v1/planetary-positions', HouseSystem::apply($params));
     }
 
     /**

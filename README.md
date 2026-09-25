@@ -240,7 +240,7 @@ $westernBirth = [
 ];
 
 // Planetary Positions
-$result = $client->western()->natal()->planetaryPositions($westernBirth);
+$result = $client->western()->natal()->planetaryPositions($westernBirth);  // 18 bodies incl. Vertex; see note below
 
 // Natal Wheel Chart
 $result = $client->western()->natal()->natalWheelChart($westernBirth);
@@ -256,6 +256,12 @@ $result = $client->western()->natal()->personaChart(
     $westernBirth + ['persona_planet' => 'moon']
 );
 ```
+
+> **`planetaryPositions` changed in v1.10.0.** It now calls astroapi-8 instead of astroapi-4, so the response includes **Vertex** (18 bodies instead of 17). Two behaviour changes come with it:
+> - the envelope is `['status' => 'success', 'code' => 200, 'message' => ..., 'data' => [...]]` - there is no longer a `success` key, so code checking `$result['success'] === 1` must switch to `$result['status'] === 'success'` (or just read `$result['data']`);
+> - invalid input now throws `ValidationException` (HTTP 422) instead of returning `['success' => 2]`.
+>
+> The `data` list is otherwise unchanged: same fields, same types, identical values for the other 17 bodies.
 
 ### Western API - Synastry
 
