@@ -23,7 +23,7 @@ class KundliApi
         $this->http = $http;
     }
 
-    // ─── Jaimini (#72-75) ────────────────────────────────────────
+    // ─── Jaimini (#72-75, #236) ──────────────────────────────────
 
     /**
      * #72 Jaimini Planetary Positions
@@ -56,6 +56,20 @@ class KundliApi
     public function jaiminiCharaDasha(array $params): array
     {
         return $this->http->post(self::HOST, '/indian-api/v2/jaimini-astrology/chara-dasha', $params);
+    }
+
+    /**
+     * #236 Jaimini Swamsa Chart
+     *
+     * The Navamsa (D9) chart with the Karakamsha sign as house 1
+     * (jaiminiKarakamshaLagna() recasts D1). The path is top-level
+     * /indian-api/v1/swamsa-chart, not under /jaimini-astrology/.
+     *
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
+     */
+    public function jaiminiSwamsaChart(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/swamsa-chart', $params);
     }
 
     // ─── Sub Planets (#76-77) ────────────────────────────────────
