@@ -84,7 +84,7 @@ class DivineApi
     }
 
     /**
-     * PDF Report API (13 endpoints)
+     * PDF Report API (14 endpoints)
      * Kundali reports, match making, vedic predictions, astrology & numerology reports.
      */
     public function pdfReport(): PdfReportApi
@@ -96,7 +96,7 @@ class DivineApi
     }
 
     /**
-     * Numerology API (15 endpoints)
+     * Numerology API (16 endpoints)
      * Mobile numerology, Chaldean numerology, and Core Numbers.
      */
     public function numerology(): NumerologyApi

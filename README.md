@@ -43,18 +43,18 @@ The SDK is organized into modules that mirror the Divine API structure:
 | Module | Access | Endpoints |
 |--------|--------|-----------|
 | Horoscope & Tarot | `$client->horoscope()` | 29 |
-| Indian - Panchang | `$client->indian()->panchang()` | 28 |
-| Indian - Festivals | `$client->indian()->festival()` | 17 |
-| Indian - Kundli | `$client->indian()->kundli()` | 60 |
+| Indian - Panchang | `$client->indian()->panchang()` | 37 |
+| Indian - Festivals | `$client->indian()->festival()` | 18 |
+| Indian - Kundli | `$client->indian()->kundli()` | 76 |
 | Indian - Match Making | `$client->indian()->matchMaking()` | 8 |
-| Western - Natal | `$client->western()->natal()` | 21 |
+| Western - Natal | `$client->western()->natal()` | 22 |
 | Western - Synastry | `$client->western()->synastry()` | 13 |
-| Western - Transit | `$client->western()->transit()` | 10 |
+| Western - Transit | `$client->western()->transit()` | 12 |
 | Western - Composite | `$client->western()->composite()` | 4 |
 | Western - Planet Returns | `$client->western()->planetReturns()` | 2 |
 | Western - Progressions | `$client->western()->progressions()` | 3 |
 | Western - Prenatal | `$client->western()->prenatal()` | 2 |
-| PDF Reports | `$client->pdfReport()` | 13 |
+| PDF Reports | `$client->pdfReport()` | 14 |
 | Numerology | `$client->numerology()` | 16 |
 | Lifestyle | `$client->lifestyle()` | 3 |
 | Calculators | `$client->calculator()` | 2 |
@@ -143,6 +143,10 @@ $result = $client->indian()->kundli()->manglikDosha($birthParams);
 $result = $client->indian()->kundli()->vimshottariDasha(
     array_merge($birthParams, ['dasha_type' => 'maha'])
 );
+
+// Jaimini Swamsa Chart: the Navamsa (D9) chart with the Karakamsha sign as house 1.
+// Returns atmakaraka, swamsha_sign, lagnamsha_sign and the chart as svg / base64_image.
+$result = $client->indian()->kundli()->jaiminiSwamsaChart($birthParams);
 
 // Lal Kitab Teva
 $result = $client->indian()->kundli()->lalKitabTeva($birthParams);
