@@ -39,7 +39,7 @@ class KundliApi
      */
     public function jaiminiPadas(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/jaimini-astrology/padas', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/jaimini-astrology/padas', $params);
     }
 
     /**
@@ -55,7 +55,7 @@ class KundliApi
      */
     public function jaiminiCharaDasha(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/jaimini-astrology/chara-dasha', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/jaimini-astrology/chara-dasha', $params);
     }
 
     /**
