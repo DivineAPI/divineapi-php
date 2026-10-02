@@ -1,6 +1,22 @@
-# Divine API PHP SDK
+# Astrology API PHP SDK (DivineAPI)
 
-Official PHP SDK for [Divine API](https://divineapi.com) - Astrology, Horoscope, Numerology, Tarot, Kundli, Panchang, and more.
+![Astrology API PHP SDK (DivineAPI)](https://raw.githubusercontent.com/DivineAPI/DivineAPI/main/assets/divineapi-php.png)
+
+[![Packagist](https://img.shields.io/packagist/v/divineapi/divineapi)](https://packagist.org/packages/divineapi/divineapi)
+[![Docs](https://img.shields.io/badge/Docs-developers.divineapi.com-blue)](https://developers.divineapi.com)
+[![Trial](https://img.shields.io/badge/Trial-14--day-green)](https://divineapi.com/start-trial)
+[![Status](https://img.shields.io/badge/Status-status.divineapi.com-lightgrey)](https://status.divineapi.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow)](LICENSE)
+
+Verified live against the DivineAPI API on 2 October 2026.
+
+Official [DivineAPI](https://divineapi.com) PHP client (Composer) for Vedic, Western, horoscope, tarot and numerology astrology endpoints. Responses come back as PHP arrays decoded from the API's JSON.
+
+## Get your API key
+
+1. Start the [14-day free trial](https://divineapi.com/start-trial) (credit card required to activate the trial).
+2. Copy your **API key** and **auth token** from the DivineAPI dashboard. The SDK sends the token as an
+   `Authorization: Bearer` header and the key as the `api_key` form field on every request.
 
 ## Requirements
 
@@ -17,47 +33,68 @@ composer require divineapi/divineapi
 
 ```php
 <?php
-
 require 'vendor/autoload.php';
 
 use DivineApi\DivineApi;
 
-$client = new DivineApi('your-api-key', 'your-auth-token');
+$client = new DivineApi('YOUR_API_KEY', 'YOUR_AUTH_TOKEN');
 
-// Daily Horoscope
-// The reading is selected by h_day: 'today', 'tomorrow', or 'yesterday'.
-$result = $client->horoscope()->dailyHoroscope([
-    'sign' => 'aries',
-    'h_day' => 'today',
-    'tzone' => 5.5,
-    'lan' => 'en',
-]);
+// Daily horoscope for Leo: h_day is 'today', 'tomorrow' or 'yesterday'; tzone is a decimal offset
+$result = $client->horoscope()->dailyHoroscope(['sign' => 'leo', 'h_day' => 'today', 'tzone' => 5.5]);
 
-print_r($result);
+if (($result['success'] ?? 0) !== 1) {
+    exit(print_r($result, true));
+}
+echo $result['data']['sign'], ' ', $result['data']['date'], PHP_EOL;
+echo $result['data']['prediction']['luck'][1], PHP_EOL;
+```
+
+Real response from this endpoint (2 Oct 2026, trimmed with `...`):
+
+```json
+{
+  "success": 1,
+  "data": {
+    "sign": "Leo",
+    "date": "2026-10-02",
+    "prediction": {
+      "personal": "The Moon finishes its run through a talkative air sign today and crosses into water tonight, and that turn sets the shape of your day, Leo. ...",
+      "health": "Your back and your heart are the places to tend today. ...",
+      "profession": "Speech is where your career moves today. ...",
+      "emotions": "Friendship carries the mood today. ...",
+      "travel": "Put a date on something. ...",
+      "luck": ["Colors of the day : Flame Red, Moonstone White", "Lucky Numbers of the day : 1, 44, 54", "..."]
+    },
+    "special": {
+      "lucky_color_codes": ["#E25822", "#E0E0E0"],
+      "horoscope_percentage": { "personal": 71, "health": 62, "profession": 71, "emotions": 74, "travel": 67, "luck": 76 }
+    }
+  }
+}
 ```
 
 ## API Modules
 
-The SDK is organized into modules that mirror the Divine API structure:
+The SDK is organized into modules that mirror the DivineAPI structure:
 
-| Module | Access | Endpoints |
-|--------|--------|-----------|
-| Horoscope & Tarot | `$client->horoscope()` | 29 |
-| Indian - Panchang | `$client->indian()->panchang()` | 37 |
-| Indian - Festivals | `$client->indian()->festival()` | 18 |
-| Indian - Kundli | `$client->indian()->kundli()` | 76 |
-| Indian - Match Making | `$client->indian()->matchMaking()` | 8 |
-| Western - Natal | `$client->western()->natal()` | 22 |
-| Western - Synastry | `$client->western()->synastry()` | 13 |
-| Western - Transit | `$client->western()->transit()` | 12 |
-| Western - Composite | `$client->western()->composite()` | 4 |
-| Western - Planet Returns | `$client->western()->planetReturns()` | 2 |
-| Western - Progressions | `$client->western()->progressions()` | 3 |
-| Western - Prenatal | `$client->western()->prenatal()` | 2 |
-| PDF Reports | `$client->pdfReport()` | 14 |
-| Numerology | `$client->numerology()` | 16 |
-| Lifestyle | `$client->lifestyle()` | 3 |
-| Calculators | `$client->calculator()` | 2 |
+| Module | Access |
+|--------|--------|
+| Horoscope & Tarot | `$client->horoscope()` |
+| Indian - Panchang | `$client->indian()->panchang()` |
+| Indian - Festivals | `$client->indian()->festival()` |
+| Indian - Kundli | `$client->indian()->kundli()` |
+| Indian - Match Making | `$client->indian()->matchMaking()` |
+| Western - Natal | `$client->western()->natal()` |
+| Western - Synastry | `$client->western()->synastry()` |
+| Western - Transit | `$client->western()->transit()` |
+| Western - Composite | `$client->western()->composite()` |
+| Western - Planet Returns | `$client->western()->planetReturns()` |
+| Western - Progressions | `$client->western()->progressions()` |
+| Western - Prenatal | `$client->western()->prenatal()` |
+| PDF Reports | `$client->pdfReport()` |
+| Numerology | `$client->numerology()` |
+| Lifestyle | `$client->lifestyle()` |
+| Calculators | `$client->calculator()` |
 
 ## Usage Examples
 
@@ -92,7 +129,7 @@ $result = $client->indian()->panchang()->findPanchang([
     'day' => 15,
     'month' => 3,
     'year' => 2026,
-    'place' => 'New Delhi',
+    'place' => 'new delhi',
     'lat' => 28.6139,
     'lon' => 77.2090,
     'tzone' => 5.5,
@@ -103,7 +140,7 @@ $result = $client->indian()->panchang()->findPanchang([
 $result = $client->indian()->panchang()->grahGochar('saturn', [
     'month' => 3,
     'year' => 2026,
-    'place' => 'Mumbai',
+    'place' => 'mumbai',
     'lat' => 19.0760,
     'lon' => 72.8777,
     'tzone' => 5.5,
@@ -123,7 +160,7 @@ $birthParams = [
     'min' => 30,
     'sec' => 0,
     'gender' => 'male',
-    'place' => 'New Delhi',
+    'place' => 'new delhi',
     'lat' => 28.6139,
     'lon' => 77.2090,
     'tzone' => 5.5,
@@ -141,7 +178,7 @@ $result = $client->indian()->kundli()->manglikDosha($birthParams);
 
 // Vimshottari Dasha
 $result = $client->indian()->kundli()->vimshottariDasha(
-    array_merge($birthParams, ['dasha_type' => 'maha'])
+    array_merge($birthParams, ['dasha_type' => 'maha-dasha'])
 );
 
 // Jaimini Swamsa Chart: the Navamsa (D9) chart with the Karakamsha sign as house 1.
@@ -184,13 +221,13 @@ $coupleParams = [
     'p1_day' => 15, 'p1_month' => 6, 'p1_year' => 1990,
     'p1_hour' => 10, 'p1_min' => 30, 'p1_sec' => 0,
     'p1_gender' => 'male',
-    'p1_place' => 'New Delhi', 'p1_lat' => 28.6139, 'p1_lon' => 77.2090, 'p1_tzone' => 5.5,
+    'p1_place' => 'new delhi', 'p1_lat' => 28.6139, 'p1_lon' => 77.2090, 'p1_tzone' => 5.5,
 
     'p2_full_name' => 'Person Two',
     'p2_day' => 20, 'p2_month' => 9, 'p2_year' => 1992,
     'p2_hour' => 14, 'p2_min' => 15, 'p2_sec' => 0,
     'p2_gender' => 'female',
-    'p2_place' => 'Mumbai', 'p2_lat' => 19.0760, 'p2_lon' => 72.8777, 'p2_tzone' => 5.5,
+    'p2_place' => 'mumbai', 'p2_lat' => 19.0760, 'p2_lon' => 72.8777, 'p2_tzone' => 5.5,
 
     'lan' => 'en',
 ];
@@ -203,7 +240,7 @@ $result = $client->indian()->matchMaking()->ashtakootMilan($coupleParams);
 ```php
 $festivalParams = [
     'year' => 2026,
-    'place' => 'New Delhi',
+    'place' => 'new delhi',
     'lat' => 28.6139,
     'lon' => 77.2090,
     'tzone' => 5.5,
@@ -233,7 +270,7 @@ $westernBirth = [
     'min' => 0,
     'sec' => 0,
     'gender' => 'female',
-    'place' => 'London',
+    'place' => 'london',
     'lat' => 51.5074,
     'lon' => -0.1278,
     'tzone' => 0,
@@ -290,14 +327,17 @@ $result = $client->western()->transit()->full($westernBirth);
 ### PDF Reports
 
 ```php
+// The API requires all seven branding fields below on every PDF request
+// (a few legacy reports also need company_landline). The SDK treats
+// company_mobile as optional, so make sure you pass it.
 $reportParams = array_merge($birthParams, [
-    'company_name' => 'My Astrology Co',
-    'company_url' => 'https://example.com',
-    'company_email' => 'info@example.com',
-    'company_mobile' => '+1234567890',
-    'company_bio' => 'Expert astrology services',
-    'logo_url' => 'https://example.com/logo.png',
-    'footer_text' => 'Generated by My Astrology Co',
+    'company_name' => 'YOUR_COMPANY_NAME',
+    'company_url' => 'YOUR_COMPANY_URL',
+    'company_email' => 'YOUR_COMPANY_EMAIL',
+    'company_mobile' => 'YOUR_COMPANY_MOBILE',
+    'company_bio' => 'YOUR_COMPANY_BIO',
+    'logo_url' => 'YOUR_LOGO_URL',
+    'footer_text' => 'YOUR_FOOTER_TEXT',
 ]);
 
 // Kundali Sampoorna Report
@@ -395,6 +435,35 @@ try {
 // Set a 60-second timeout
 $client = new DivineApi('api-key', 'auth-token', 60);
 ```
+
+## Related repos
+
+| Type | Repo |
+|---|---|
+| SDK | [divineapi-python](https://github.com/DivineAPI/divineapi-python): Python SDK (`pip install divineapi`) |
+| SDK | [divineapi-node](https://github.com/DivineAPI/divineapi-node): Node.js / TypeScript SDK (`npm install divineapi`) |
+| REST API | [kundli-api](https://github.com/DivineAPI/kundli-api): Kundli / Kundali API (Vedic birth chart, dashas, doshas) |
+| REST API | [kundli-matching-api](https://github.com/DivineAPI/kundli-matching-api): Kundli matching API (Ashtakoot, Dashakoot) |
+| REST API | [lal-kitab-api](https://github.com/DivineAPI/lal-kitab-api): Lal Kitab API |
+| REST API | [panchang-api](https://github.com/DivineAPI/panchang-api): Panchang API |
+| REST API | [hindu-festival-api](https://github.com/DivineAPI/hindu-festival-api): Hindu Festival API |
+| REST API | [birth-chart-api](https://github.com/DivineAPI/birth-chart-api): Birth Chart API |
+| REST API | [horoscope-api](https://github.com/DivineAPI/horoscope-api): Horoscope API |
+| REST API | [tarot-api](https://github.com/DivineAPI/tarot-api): Tarot API |
+| REST API | [numerology-api](https://github.com/DivineAPI/numerology-api): Numerology API |
+| REST API | [astrology-api](https://github.com/DivineAPI/astrology-api): Astrology API (overview of all domains) |
+| MCP | [mcp-indian-astrology](https://github.com/DivineAPI/mcp-indian-astrology): Vedic astrology MCP server |
+| MCP | [mcp-western-astrology](https://github.com/DivineAPI/mcp-western-astrology): Western astrology MCP server |
+| MCP | [mcp-horoscope-numerology](https://github.com/DivineAPI/mcp-horoscope-numerology): Horoscope, tarot and numerology MCP server |
+
+## Support
+
+- API reference: [developers.divineapi.com](https://developers.divineapi.com)
+- Postman collection: [documenter.getpostman.com/view/26759678/2sBYAysU8Y](https://documenter.getpostman.com/view/26759678/2sBYAysU8Y)
+- API status: [status.divineapi.com](https://status.divineapi.com)
+- Help centre: [support.divineapi.com](https://support.divineapi.com)
+- Plans and prices: [divineapi.com/pricing](https://divineapi.com/pricing)
+- SDK bugs: open an issue in this repo
 
 ## License
 
