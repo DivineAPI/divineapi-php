@@ -109,11 +109,15 @@ class KundliApi
     }
 
     /**
-     * #80 KP Planetary Sub
+     * #80 KP Planetary Sub (v2)
+     *
+     * Each table_data row also carries the planet's KP aspects:
+     * conjunction, aspected_by and aspect_to (planets, houses).
+     * Accepts the optional node_type ("meannode" or "truenode").
      */
     public function kpPlanetarySub(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/kp/planetary-sub', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kp/planetary-sub', $params);
     }
 
     /**
@@ -125,11 +129,14 @@ class KundliApi
     }
 
     /**
-     * #82 KP Cuspal Sub
+     * #82 KP Cuspal Sub (v2)
+     *
+     * Each table_data row also carries aspected_by: the planets that
+     * aspect that cusp.
      */
     public function kpCuspalSub(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/kp/cuspal-sub', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kp/cuspal-sub', $params);
     }
 
     // ─── Kundali Transit (#83-84) ────────────────────────────────
