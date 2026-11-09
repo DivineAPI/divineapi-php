@@ -125,7 +125,7 @@ class KundliApi
      */
     public function kpPlanetaryCuspalSignificatorTable(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/kp/planetary-cuspal-significator-table', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/kp/planetary-cuspal-significator-table', $params);
     }
 
     /**
