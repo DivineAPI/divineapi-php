@@ -366,6 +366,22 @@ class KundliApi
     }
 
     /**
+     * #237 Graha Drishti (Vedic planetary aspects)
+     *
+     * Parashari drishti on whole-sign houses from the Lagna: every graha
+     * aspects the 7th; Mars also the 4th/8th, Jupiter the 5th/9th, Saturn
+     * the 3rd/10th, Rahu and Ketu the 5th/9th. Returns planets (with
+     * aspects and aspected_by) and houses (with planets and aspected_by).
+     * Names are in English whatever lan.
+     *
+     * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone; optional node_type (meannode|truenode)
+     */
+    public function grahaDrishti(array $params): array
+    {
+        return $this->http->post(self::HOST, '/indian-api/v1/aspects', $params);
+    }
+
+    /**
      * #109 Sudarshana Chakra
      */
     public function sudarshanaChakra(array $params): array

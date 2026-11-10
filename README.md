@@ -182,6 +182,9 @@ $result = $client->indian()->kundli()->vimshottariDasha(
     array_merge($birthParams, ['dasha_type' => 'maha-dasha'])
 );
 
+// Graha Drishti (Vedic aspects): which planets aspect which houses and planets.
+$result = $client->indian()->kundli()->grahaDrishti($birthParams);
+
 // Jaimini Swamsa Chart: the Navamsa (D9) chart with the Karakamsha sign as house 1.
 // Returns atmakaraka, swamsha_sign, lagnamsha_sign and the chart as svg / base64_image.
 $result = $client->indian()->kundli()->jaiminiSwamsaChart($birthParams);
