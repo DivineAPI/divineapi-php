@@ -353,6 +353,12 @@ $result = $client->pdfReport()->astrologyReport(
     array_merge($reportParams, ['report_code' => 'CAREER-REPORT', 'theme' => '001'])
 );
 
+// Optional cover on the 9 Vedic V1 PDFs: show only your image on page 1
+$result = $client->pdfReport()->kundaliSampoorna(array_merge($reportParams, [
+    'front_image' => 'https://example.com/cover.png',
+    'hide_frontpage_details' => true,   // sent as 1, as this API expects
+]));
+
 // Reports V2: JSON body + x-api-key header (handled by the SDK). Needs a DivineAPI PDF
 // account's API key and token; a standard API account gets 401 "Invalid Bearer token".
 // Returns reportId, htmlUrl, pdfUrl, statusUrl; ready in about 10-30 seconds.
@@ -362,6 +368,12 @@ $result = $client->pdfReport()->reportsGenerate(
 $result = $client->pdfReport()->westernReportsGenerate(
     array_merge($reportParams, ['report_type' => 'western-inner-moon', 'tier' => 'snapshot'])
 );
+// hide_frontpage_details => true shows only front_image on the cover (requires front_image)
+$result = $client->pdfReport()->reportsGenerate(array_merge($reportParams, [
+    'report_type' => 'vedic-career-report',
+    'front_image' => 'https://example.com/cover.png',
+    'hide_frontpage_details' => true,
+]));
 ```
 
 ### Numerology
