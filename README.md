@@ -186,6 +186,15 @@ $result = $client->indian()->kundli()->vimshottariDasha(
 // Graha Drishti (Vedic aspects): which planets aspect which houses and planets.
 $result = $client->indian()->kundli()->grahaDrishti($birthParams);
 
+// KP Prashna (horary): the moment and place the question is asked, not birth data.
+// full_name and gender are optional here (the API requires them but ignores them).
+$asked = ['day' => 12, 'month' => 10, 'year' => 2026, 'hour' => 10, 'min' => 30, 'sec' => 0,
+          'place' => 'New Delhi', 'lat' => 28.6139, 'lon' => 77.2090, 'tzone' => 5.5];
+$questions = $client->indian()->kundli()->kpPrashnaInstantQuestions();   // categories + house_hint
+$chart = $client->indian()->kundli()->kpPrashnaChart($asked + ['horary_number' => 100]);   // 1-249
+$ruling = $client->indian()->kundli()->kpPrashnaRulingPlanets($asked);
+$dasha = $client->indian()->kundli()->kpPrashnaDasha($asked);   // full 819-period timeline (~74 KB)
+
 // Jaimini Swamsa Chart: the Navamsa (D9) chart with the Karakamsha sign as house 1.
 // Returns atmakaraka, swamsha_sign, lagnamsha_sign and the chart as svg / base64_image.
 $result = $client->indian()->kundli()->jaiminiSwamsaChart($birthParams);
