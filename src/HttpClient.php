@@ -46,14 +46,44 @@ class HttpClient
 
         $params['api_key'] = $this->apiKey;
 
+        return $this->send($url, [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->authToken,
+                'Accept' => 'application/json',
+            ],
+            'multipart' => $this->buildMultipart($params),
+        ]);
+    }
+
+    /**
+     * POST a JSON body with the API key in an x-api-key header.
+     *
+     * Used by Reports V2 (/api/v1/reports/generate and /api/v1/western/reports/generate),
+     * which rejects form-encoded requests with 401 "x-api-key header required".
+     *
+     * @throws DivineApiException
+     * @throws AuthenticationException
+     * @throws ValidationException
+     */
+    public function postJson(string $host, string $path, array $body = []): array
+    {
+        return $this->send("https://{$host}{$path}", [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->authToken,
+                'x-api-key' => $this->apiKey,
+                'Accept' => 'application/json',
+            ],
+            'json' => $body,
+        ]);
+    }
+
+    /**
+     * Send the request and map HTTP failures to SDK exceptions.
+     */
+    private function send(string $url, array $options): array
+    {
         try {
-            $response = $this->client->post($url, [
-                'headers' => [
-                    'Authorization' => 'Bearer ' . $this->authToken,
-                    'Accept' => 'application/json',
-                ],
-                'multipart' => $this->buildMultipart($params),
-            ]);
+            $response = $this->client->post($url, $options);
 
             $body = (string) $response->getBody();
             $decoded = json_decode($body, true);

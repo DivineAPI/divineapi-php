@@ -352,6 +352,16 @@ $result = $client->pdfReport()->kundaliSampoorna($reportParams);
 $result = $client->pdfReport()->astrologyReport(
     array_merge($reportParams, ['report_code' => 'CAREER-REPORT', 'theme' => '001'])
 );
+
+// Reports V2: JSON body + x-api-key header (handled by the SDK). Needs a DivineAPI PDF
+// account's API key and token; a standard API account gets 401 "Invalid Bearer token".
+// Returns reportId, htmlUrl, pdfUrl, statusUrl; ready in about 10-30 seconds.
+$result = $client->pdfReport()->reportsGenerate(
+    array_merge($reportParams, ['report_type' => 'vedic-career-report'])
+);
+$result = $client->pdfReport()->westernReportsGenerate(
+    array_merge($reportParams, ['report_type' => 'western-inner-moon', 'tier' => 'snapshot'])
+);
 ```
 
 ### Numerology

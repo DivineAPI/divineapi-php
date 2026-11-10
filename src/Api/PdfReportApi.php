@@ -152,11 +152,34 @@ class PdfReportApi
     }
 
     /**
-     * Reports V2 Generate
-     * @param array Birth params + report_code + company branding params
+     * Reports V2: Vedic and Numerology reports (POST /api/v1/reports/generate)
+     *
+     * Sent as a JSON body with the API key in an x-api-key header, as this endpoint requires.
+     * Returns reportId, htmlUrl, pdfUrl, statusUrl and status; the report is ready in about
+     * 10-30 seconds. Reports V2 only accepts DivineAPI PDF accounts: create the client with
+     * that account's API key and auth token (a standard API account gets 401 "Invalid Bearer
+     * token").
+     *
+     * @param array report_type (e.g. 'vedic-career-report') + birth params + the seven branding
+     *              params (incl. company_mobile); optional design params
      */
     public function reportsGenerate(array $params): array
     {
-        return $this->http->post(self::HOST, '/api/v1/reports/generate', $params);
+        return $this->http->postJson(self::HOST, '/api/v1/reports/generate', $params);
+    }
+
+    /**
+     * #239 Reports V2: Western reports (POST /api/v1/western/reports/generate)
+     *
+     * report_type is a Western slug (e.g. 'western-natal-blueprint') or a family code with tier
+     * (snapshot, insight, advanced, comprehensive). Same credentials and branding as
+     * reportsGenerate().
+     *
+     * @param array report_type + birth params + the seven branding params; optional tier,
+     *              house_system, theme
+     */
+    public function westernReportsGenerate(array $params): array
+    {
+        return $this->http->postJson(self::HOST, '/api/v1/western/reports/generate', $params);
     }
 }
