@@ -12,6 +12,7 @@ use DivineApi\Api\NumerologyApi;
 use DivineApi\Api\LifestyleApi;
 use DivineApi\Api\CalculatorApi;
 use DivineApi\Api\LocationApi;
+use DivineApi\Api\ChatbotApi;
 
 /**
  * Divine API PHP SDK
@@ -23,6 +24,7 @@ use DivineApi\Api\LocationApi;
  *   $result = $client->horoscope()->dailyHoroscope([...]);
  *   $result = $client->indian()->panchang()->findPanchang([...]);
  *   $result = $client->western()->natal()->planetaryPositions([...]);
+ *   $result = $client->chatbot()->chat(['user_id' => 'u_1', 'session_id' => 's_1', 'message' => '...']);
  */
 class DivineApi
 {
@@ -35,6 +37,7 @@ class DivineApi
     private ?LifestyleApi $lifestyle = null;
     private ?CalculatorApi $calculator = null;
     private ?LocationApi $location = null;
+    private ?ChatbotApi $chatbot = null;
 
     /**
      * Create a new DivineApi client.
@@ -143,5 +146,17 @@ class DivineApi
             $this->location = new LocationApi($this->http);
         }
         return $this->location;
+    }
+
+    /**
+     * Astro Chatbot API (5 endpoints, ask.divineapi.com; needs an Astro Chatbot plan)
+     * Chat (also streamed), daily horoscope prediction, sessions per end user, balance.
+     */
+    public function chatbot(): ChatbotApi
+    {
+        if ($this->chatbot === null) {
+            $this->chatbot = new ChatbotApi($this->http);
+        }
+        return $this->chatbot;
     }
 }
