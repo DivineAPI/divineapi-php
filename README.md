@@ -172,6 +172,13 @@ $birthParams = [
 // Basic Astro Details
 $result = $client->indian()->kundli()->basicAstroDetails($birthParams);
 
+// weekday 'vedic' changes the day at sunrise, so a birth before sunrise gets the
+// previous day's vaar ('civil', the default, changes it at midnight). Also accepted by
+// varshphalVarshaPravesh, varshphalBasicAstroDetails and lalKitabVarshphalVarshaPravesh.
+$result = $client->indian()->kundli()->basicAstroDetails(
+    array_merge($birthParams, ['weekday' => 'vedic'])
+);
+
 // Horoscope Chart (D1, D9, etc.)
 $result = $client->indian()->kundli()->horoscopeChart('D1', $birthParams);
 
