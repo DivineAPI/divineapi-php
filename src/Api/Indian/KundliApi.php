@@ -160,7 +160,7 @@ class KundliApi
      * significators (houses, planets) and current_dasha with
      * houses_matching_current_dasha. The API gives no yes/no verdict.
      *
-     * @param array Prashna params: horary_number, day, month, year, hour, min, sec, place, lat, lon, tzone;
+     * @param array Prashna params: horary_number, day, month, year, hour, min, place, lat, lon, tzone; optional sec (default 0);
      *              optional node_type, full_name (default 'Querent'), gender (male/female/other, default 'other')
      */
     public function kpPrashnaChart(array $params): array
@@ -175,7 +175,7 @@ class KundliApi
      * ruling_planets (day lord and the Moon's and Ascendant's sign, star and
      * sub lords) and ruling_planets_list.
      *
-     * @param array Prashna params: day, month, year, hour, min, sec, place, lat, lon, tzone; optional full_name, gender
+     * @param array Prashna params: day, month, year, hour, min, place, lat, lon, tzone; optional sec (default 0); optional full_name, gender
      */
     public function kpPrashnaRulingPlanets(array $params): array
     {
@@ -189,7 +189,7 @@ class KundliApi
      * and dasha_timeline, the full 120-year tree from the current
      * mahadasha (819 periods, about 74 KB).
      *
-     * @param array Prashna params: day, month, year, hour, min, sec, place, lat, lon, tzone; optional full_name, gender
+     * @param array Prashna params: day, month, year, hour, min, place, lat, lon, tzone; optional sec (default 0); optional full_name, gender
      */
     public function kpPrashnaDasha(array $params): array
     {
@@ -197,12 +197,12 @@ class KundliApi
     }
 
     /**
-     * The API requires full_name and gender for KP Prashna but does not use
-     * them in the calculation, so fill them in when they are missing.
+     * The API requires sec, full_name and gender for KP Prashna. Default sec to 0;
+     * full_name and gender are not used in the calculation, so fill them in when missing.
      */
     private static function prashnaPayload(array $params): array
     {
-        return $params + ['full_name' => 'Querent', 'gender' => 'other'];
+        return $params + ['sec' => 0, 'full_name' => 'Querent', 'gender' => 'other'];
     }
 
     // ─── Kundali Transit (#83-84) ────────────────────────────────
