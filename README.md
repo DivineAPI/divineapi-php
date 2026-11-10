@@ -96,6 +96,7 @@ The SDK is organized into modules that mirror the DivineAPI structure:
 | Numerology | `$client->numerology()` |
 | Lifestyle | `$client->lifestyle()` |
 | Calculators | `$client->calculator()` |
+| Location (place search) | `$client->location()` |
 
 ## Usage Examples
 
@@ -404,6 +405,19 @@ $result = $client->calculator()->loveCalculator([
     'your_gender' => 'male',
     'partner_gender' => 'female',
 ]);
+```
+
+### Location
+
+```php
+// Place name (at least 3 characters) -> up to 10 matches with lat, lon and timezone
+$result = $client->location()->search(['place' => 'Patna']);
+$first = $result['data']['results'][0];   // latitude 25.41667, longitude 85.16667, timezone "Asia/Kolkata"
+
+// timezone_value is the zone's UTC offset today. For a birth date in a zone with
+// summer time (e.g. America/New_York: -5 in winter, -4 in summer) work out the offset
+// for that date from $first['timezone'] before passing it as tzone.
+// Place data (c) GeoNames (geonames.org), CC BY 4.0: $result['attribution'].
 ```
 
 ## Error Handling

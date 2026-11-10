@@ -11,6 +11,7 @@ use DivineApi\Api\PdfReportApi;
 use DivineApi\Api\NumerologyApi;
 use DivineApi\Api\LifestyleApi;
 use DivineApi\Api\CalculatorApi;
+use DivineApi\Api\LocationApi;
 
 /**
  * Divine API PHP SDK
@@ -33,6 +34,7 @@ class DivineApi
     private ?NumerologyApi $numerology = null;
     private ?LifestyleApi $lifestyle = null;
     private ?CalculatorApi $calculator = null;
+    private ?LocationApi $location = null;
 
     /**
      * Create a new DivineApi client.
@@ -129,5 +131,17 @@ class DivineApi
             $this->calculator = new CalculatorApi($this->http);
         }
         return $this->calculator;
+    }
+
+    /**
+     * Location API (1 endpoint, geolocation.divineapi.com)
+     * Place name -> latitude, longitude and timezone.
+     */
+    public function location(): LocationApi
+    {
+        if ($this->location === null) {
+            $this->location = new LocationApi($this->http);
+        }
+        return $this->location;
     }
 }
