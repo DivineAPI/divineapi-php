@@ -13,6 +13,9 @@ use DivineApi\HttpClient;
  * company_name, company_url, company_email, company_bio, logo_url, footer_text
  * (company_mobile is optional). The API returns HTTP 400 if any are missing.
  * Couple reports also accept p1_ and p2_ prefixed birth params.
+ *
+ * The 9 Vedic V1 reports (#172-180) also take an optional front_image (cover image URL) and
+ * hide_frontpage_details (true shows only that image on the cover).
  */
 class PdfReportApi
 {
@@ -25,6 +28,30 @@ class PdfReportApi
         $this->http = $http;
     }
 
+    /**
+     * The V1 PDF endpoints take hide_frontpage_details only as 0/1. A PHP bool would be sent as
+     * "1" or "" (and "" is rejected), so map it to 1/0. Used by the 9 Vedic V1 reports.
+     */
+    private static function v1Cover(array $params): array
+    {
+        if (isset($params['hide_frontpage_details']) && is_bool($params['hide_frontpage_details'])) {
+            $params['hide_frontpage_details'] = $params['hide_frontpage_details'] ? 1 : 0;
+        }
+        return $params;
+    }
+
+    /**
+     * Reports V2 wants a real boolean (or "true"/"false"); accept 0/1 too.
+     */
+    private static function v2Body(array $params): array
+    {
+        if (array_key_exists('hide_frontpage_details', $params)
+            && in_array($params['hide_frontpage_details'], [0, 1, '0', '1'], true)) {
+            $params['hide_frontpage_details'] = in_array($params['hide_frontpage_details'], [1, '1'], true);
+        }
+        return $params;
+    }
+
     // ─── Indian Kundali Reports (#172-174) ──────────────────────
 
     /**
@@ -33,7 +60,7 @@ class PdfReportApi
      */
     public function kundaliSampoorna(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/kundali-sampoorna', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kundali-sampoorna', self::v1Cover($params));
     }
 
     /**
@@ -41,7 +68,7 @@ class PdfReportApi
      */
     public function kundaliAnanta(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/kundali-ananta', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kundali-ananta', self::v1Cover($params));
     }
 
     /**
@@ -49,7 +76,7 @@ class PdfReportApi
      */
     public function kundaliPrakash(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/kundali-prakash', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kundali-prakash', self::v1Cover($params));
     }
 
     // ─── Match Making (#175) ────────────────────────────────────
@@ -60,7 +87,7 @@ class PdfReportApi
      */
     public function matchMaking(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/match-making', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/match-making', self::v1Cover($params));
     }
 
     // ─── Specialized Reports (#176-177) ─────────────────────────
@@ -70,7 +97,7 @@ class PdfReportApi
      */
     public function governmentJobReport(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/government-job-report', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/government-job-report', self::v1Cover($params));
     }
 
     /**
@@ -78,7 +105,7 @@ class PdfReportApi
      */
     public function foreignTravelSettlement(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/foreign-travel-settlement', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/foreign-travel-settlement', self::v1Cover($params));
     }
 
     // ─── Vedic Yearly Predictions (#178-180) ────────────────────
@@ -88,7 +115,7 @@ class PdfReportApi
      */
     public function vedicYearlyPrediction5Year(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/vedic-yearly-prediction-5-year', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/vedic-yearly-prediction-5-year', self::v1Cover($params));
     }
 
     /**
@@ -96,7 +123,7 @@ class PdfReportApi
      */
     public function vedicYearlyPrediction10Year(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/vedic-yearly-prediction-10-year', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/vedic-yearly-prediction-10-year', self::v1Cover($params));
     }
 
     /**
@@ -104,7 +131,7 @@ class PdfReportApi
      */
     public function vedicYearlyPrediction15Year(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/vedic-yearly-prediction-15-year', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/vedic-yearly-prediction-15-year', self::v1Cover($params));
     }
 
     // ─── Astrology Reports (#181-182) ───────────────────────────
@@ -152,11 +179,34 @@ class PdfReportApi
     }
 
     /**
-     * Reports V2 Generate
-     * @param array Birth params + report_code + company branding params
+     * Reports V2: Vedic and Numerology reports (POST /api/v1/reports/generate)
+     *
+     * Sent as a JSON body with the API key in an x-api-key header, as this endpoint requires.
+     * Returns reportId, htmlUrl, pdfUrl, statusUrl and status; the report is ready in about
+     * 10-30 seconds. Reports V2 only accepts DivineAPI PDF accounts: create the client with
+     * that account's API key and auth token (a standard API account gets 401 "Invalid Bearer
+     * token"). hide_frontpage_details => true shows only front_image on the cover and requires it.
+     *
+     * @param array report_type (e.g. 'vedic-career-report') + birth params + the seven branding
+     *              params (incl. company_mobile); optional front_image, hide_frontpage_details
      */
     public function reportsGenerate(array $params): array
     {
-        return $this->http->post(self::HOST, '/api/v1/reports/generate', $params);
+        return $this->http->postJson(self::HOST, '/api/v1/reports/generate', self::v2Body($params));
+    }
+
+    /**
+     * #239 Reports V2: Western reports (POST /api/v1/western/reports/generate)
+     *
+     * report_type is a Western slug (e.g. 'western-natal-blueprint') or a family code with tier
+     * (snapshot, insight, advanced, comprehensive). Same credentials, branding and cover options
+     * as reportsGenerate().
+     *
+     * @param array report_type + birth params + the seven branding params; optional tier,
+     *              house_system, theme, front_image, hide_frontpage_details
+     */
+    public function westernReportsGenerate(array $params): array
+    {
+        return $this->http->postJson(self::HOST, '/api/v1/western/reports/generate', self::v2Body($params));
     }
 }
