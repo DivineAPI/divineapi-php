@@ -23,6 +23,27 @@ class KundliApi
         $this->http = $http;
     }
 
+    /**
+     * Trim and lowercase an optional 'weekday' ('civil' or 'vedic'). Left out when
+     * not given, so the API applies its default ('civil').
+     *
+     * @throws \InvalidArgumentException for any other value
+     */
+    private static function withWeekday(array $params): array
+    {
+        if (!isset($params['weekday']) || $params['weekday'] === '') {
+            return $params;
+        }
+        $mode = strtolower(trim((string) $params['weekday']));
+        if ($mode !== 'civil' && $mode !== 'vedic') {
+            throw new \InvalidArgumentException(
+                "Invalid weekday '{$params['weekday']}'. Must be 'civil' or 'vedic'."
+            );
+        }
+        $params['weekday'] = $mode;
+        return $params;
+    }
+
     // ─── Jaimini (#72-75, #236) ──────────────────────────────────
 
     /**
@@ -219,10 +240,16 @@ class KundliApi
 
     /**
      * #91 Basic Astro Details
+     * 'vaar' is the weekday of birth; with weekday 'vedic' a birth before sunrise
+     * gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function basicAstroDetails(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v3/basic-astro-details', $params);
+        return $this->http->post(self::HOST, '/indian-api/v3/basic-astro-details', self::withWeekday($params));
     }
 
     /**
@@ -502,11 +529,17 @@ class KundliApi
 
     /**
      * #225 Lal Kitab Varshphal Varsha Pravesh
-     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year (+ optional weekday)
+     * 'weekday' in the response is the day of the Varsha Pravesh moment; with
+     * weekday 'vedic' a moment before sunrise gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function lalKitabVarshphalVarshaPravesh(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', self::withWeekday($params));
     }
 
     /**
@@ -602,18 +635,32 @@ class KundliApi
 
     /**
      * Varshphal Varsha Pravesh.
+     * @param array Birth params + varshphal_year (+ optional weekday)
+     * 'weekday' in the response is the day of the Varsha Pravesh moment; with
+     * weekday 'vedic' a moment before sunrise gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function varshphalVarshaPravesh(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/varsha-pravesh', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/varsha-pravesh', self::withWeekday($params));
     }
 
     /**
      * Varshphal Basic Astro Details.
+     * @param array Birth params + varshphal_year (+ optional weekday)
+     * 'vaar' is the day of the Varsha Pravesh moment; with weekday 'vedic' a
+     * moment before sunrise gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function varshphalBasicAstroDetails(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/basic-astro-details', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/basic-astro-details', self::withWeekday($params));
     }
 
     /**
