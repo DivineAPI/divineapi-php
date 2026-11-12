@@ -112,6 +112,16 @@ $result = $client->horoscope()->weeklyHoroscope([
     'lan' => 'en',
 ]);
 
+// Chinese Weekly / Monthly / Yearly Horoscope
+// sign is a Chinese animal (rat, ox, tiger, ...); week / month / year is 'current', 'prev' or 'next'.
+$result = $client->horoscope()->chineseWeeklyHoroscope([
+    'sign' => 'rat',
+    'week' => 'current',
+    'tzone' => 5.5,
+]);
+$result = $client->horoscope()->chineseMonthlyHoroscope(['sign' => 'dragon', 'month' => 'current', 'tzone' => 5.5]);
+$result = $client->horoscope()->chineseYearlyHoroscope(['sign' => 'tiger', 'year' => 'current', 'tzone' => 5.5]);
+
 // Yes or No Tarot
 $result = $client->horoscope()->yesOrNoTarot(['lan' => 'en']);
 

@@ -9,7 +9,7 @@ use DivineApi\HttpClient;
 /**
  * Horoscope & Tarot API endpoints (astroapi-5.divineapi.com)
  *
- * Covers: Daily/Weekly/Monthly/Yearly Horoscope, Chinese Horoscope,
+ * Covers: Daily/Weekly/Monthly/Yearly Horoscope, Chinese Horoscope (daily/weekly/monthly/yearly),
  * Numerology Horoscope, Tarot, Fortune, Coffee, and various readings.
  */
 class HoroscopeApi
@@ -73,6 +73,41 @@ class HoroscopeApi
     public function chineseHoroscope(array $params): array
     {
         return $this->http->post(self::HOST, '/api/v3/chinese-horoscope', $params);
+    }
+
+    /**
+     * #30 Chinese Weekly Horoscope
+     * sign is a Chinese animal (rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey,
+     * rooster, dog, pig). week selects the period: 'current', 'prev', or 'next' (not a date).
+     * data has sign, week (e.g. "10 Nov 2026 to 16 Nov 2026") and prediction
+     * (growth, health, wealth, career, love, family, fortune).
+     * @param array{sign: string, week: string, tzone: string|float, lan?: string} $params
+     */
+    public function chineseWeeklyHoroscope(array $params): array
+    {
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-weekly', $params);
+    }
+
+    /**
+     * #31 Chinese Monthly Horoscope
+     * month selects the period: 'current', 'prev', or 'next' (not a month number).
+     * data has sign, month (e.g. "November 2026") and prediction, like chineseWeeklyHoroscope.
+     * @param array{sign: string, month: string, tzone: string|float, lan?: string} $params
+     */
+    public function chineseMonthlyHoroscope(array $params): array
+    {
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-monthly', $params);
+    }
+
+    /**
+     * #32 Chinese Yearly Horoscope
+     * year selects the period: 'current', 'prev', or 'next' (not a calendar year).
+     * data has sign, year and prediction, like chineseWeeklyHoroscope.
+     * @param array{sign: string, year: string, tzone: string|float, lan?: string} $params
+     */
+    public function chineseYearlyHoroscope(array $params): array
+    {
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-yearly', $params);
     }
 
     /**
