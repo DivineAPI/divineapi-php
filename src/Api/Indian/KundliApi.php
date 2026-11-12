@@ -47,12 +47,13 @@ class KundliApi
     // ─── Jaimini (#72-75, #236) ──────────────────────────────────
 
     /**
-     * #72 Jaimini Planetary Positions
+     * #72 Jaimini Planetary Positions (v2: nakshatra spellings Mrigashira, Shravan).
+     * Only planetary-positions has a v2; padas and karakamsha-lagna stay on v1.
      * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
      */
     public function jaiminiPlanetaryPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/jaimini-astrology/planetary-positions', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/jaimini-astrology/planetary-positions', $params);
     }
 
     /**
@@ -96,29 +97,29 @@ class KundliApi
     // ─── Sub Planets (#76-77) ────────────────────────────────────
 
     /**
-     * #76 Sub Planet Positions
+     * #76 Sub Planet Positions (v2: nakshatra spellings Mrigashira, Shravan)
      */
     public function subPlanetPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/sub-planet-positions', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/sub-planet-positions', $params);
     }
 
     /**
-     * #77 Sub Planet Chart
+     * #77 Sub Planet Chart. v1 is the only version: there is no v2 sub-planet-chart (it returns 404).
      */
     public function subPlanetChart(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/sub-planet-chart', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/sub-planet-chart', $params);
     }
 
     // ─── KP System (#78-82) ─────────────────────────────────────
 
     /**
-     * #78 KP Planetary Positions
+     * #78 KP Planetary Positions (v2: nakshatra spellings Mrigashira, Shravan)
      */
     public function kpPlanetaryPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/kp/planetary-positions', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kp/planetary-positions', $params);
     }
 
     /**
@@ -336,11 +337,11 @@ class KundliApi
     }
 
     /**
-     * #102 Shadbala
+     * #102 Shadbala (v3: adds ishta_phala and kashta_phala per planet)
      */
     public function shadbala(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/shadbala', $params);
+        return $this->http->post(self::HOST, '/indian-api/v3/shadbala', $params);
     }
 
     /**

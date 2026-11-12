@@ -225,6 +225,11 @@ $result = $client->indian()->kundli()->planetRemedies(
 );
 ```
 
+> **Endpoint versions changed in v1.19.0** (to match the API docs and the Node SDK):
+> - `subPlanetChart` now calls v1. Before v1.19.0 it called `/indian-api/v2/sub-planet-chart`, which does not exist, so every call failed with a 404.
+> - `jaiminiPlanetaryPositions`, `kpPlanetaryPositions` and `subPlanetPositions` now call v2. The response is the same except two nakshatra spellings: `Mrigshira` is now `Mrigashira` and `Shravana` is now `Shravan`.
+> - `shadbala` now calls v3, which adds `ishta_phala` and `kashta_phala` (one value per planet). Every other field is unchanged.
+
 ### Indian API - Match Making
 
 ```php
@@ -269,6 +274,8 @@ $result = $client->indian()->festival()->findFestival(
     array_merge($festivalParams, ['festival' => 'maha_shivratri'])
 );
 ```
+
+> **`shraavanaFestivals` (and `hinduMonthFestivals('shraavana', ...)`) calls v3 since v1.19.0** (the other eleven months have no v3 and stay on v2). In v2, `hariyaali_teej`, `gayatri_jayanti`, `narali_purnima` and `sanskrit_divas` returned their date under `dates` instead of `date`; v3 fixes those four. `shraavana_somvaar_vrat` and `mangla_gauri_vrat` still use `dates` because they fall on every Monday and Tuesday of the month.
 
 ### Western API - Natal
 
