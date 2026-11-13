@@ -52,7 +52,7 @@ class DivineApi
     }
 
     /**
-     * Horoscope & Tarot API (29 endpoints)
+     * Horoscope & Tarot API (32 endpoints)
      * Daily/Weekly/Monthly/Yearly Horoscope, Chinese, Numerology Horoscope,
      * Tarot, Fortune, Coffee, and various readings.
      */
