@@ -101,7 +101,7 @@ class DivineApi
     }
 
     /**
-     * Numerology API (16 endpoints)
+     * Numerology API (17 endpoints)
      * Mobile numerology, Chaldean numerology, and Core Numbers.
      */
     public function numerology(): NumerologyApi

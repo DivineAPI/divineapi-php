@@ -413,6 +413,16 @@ $result = $client->numerology()->loshuGrid([
     'lan' => 'en',
 ]);
 
+// Business Name Correction: the business name plus its owner's full name and birth date.
+// Suggests up to 3 respellings when a better-aligned number exists (English only, no lan).
+$result = $client->numerology()->businessNameCorrection([
+    'business_name' => 'Sunrise Traders',
+    'full_name' => 'John Doe',
+    'day' => 15,
+    'month' => 6,
+    'year' => 1990,
+]);
+
 // Core Numbers
 $result = $client->numerology()->coreNumbers([
     'full_name' => 'John Doe',
