@@ -79,7 +79,7 @@ class HoroscopeApi
      * #30 Chinese Weekly Horoscope
      * sign is a Chinese animal (rat, ox, tiger, rabbit, dragon, snake, horse, goat, monkey,
      * rooster, dog, pig). week selects the period: 'current', 'prev', or 'next' (not a date).
-     * data has sign, week (e.g. "10 Nov 2026 to 16 Nov 2026") and prediction
+     * data has sign, week (e.g. "08 Nov 2026 to 14 Nov 2026") and prediction
      * (growth, health, wealth, career, love, family, fortune).
      * @param array{sign: string, week: string, tzone: string|float, lan?: string} $params
      */
