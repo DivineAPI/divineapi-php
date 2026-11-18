@@ -23,6 +23,15 @@ class FestivalApi
         'kartika', 'pausha',
     ];
 
+    /**
+     * API version per month. Only shraavana has a v3 (DV-374): in v2, four of its
+     * festivals (hariyaali_teej, gayatri_jayanti, narali_purnima, sanskrit_divas)
+     * return their date under "dates" instead of "date"; v3 fixes those four.
+     */
+    private const MONTH_VERSION = [
+        'shraavana' => 'v3',
+    ];
+
     public function __construct(HttpClient $http)
     {
         $this->http = $http;
@@ -37,7 +46,8 @@ class FestivalApi
      */
     public function hinduMonthFestivals(string $month, array $params): array
     {
-        return $this->http->post(self::HOST, "/indian-api/v2/{$month}-festivals", $params);
+        $version = self::MONTH_VERSION[$month] ?? 'v2';
+        return $this->http->post(self::HOST, "/indian-api/{$version}/{$month}-festivals", $params);
     }
 
     /** #57 Margashirsh Festivals */

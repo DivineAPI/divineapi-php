@@ -23,15 +23,37 @@ class KundliApi
         $this->http = $http;
     }
 
+    /**
+     * Trim and lowercase an optional 'weekday' ('civil' or 'vedic'). Left out when
+     * not given, so the API applies its default ('civil').
+     *
+     * @throws \InvalidArgumentException for any other value
+     */
+    private static function withWeekday(array $params): array
+    {
+        if (!isset($params['weekday']) || $params['weekday'] === '') {
+            return $params;
+        }
+        $mode = strtolower(trim((string) $params['weekday']));
+        if ($mode !== 'civil' && $mode !== 'vedic') {
+            throw new \InvalidArgumentException(
+                "Invalid weekday '{$params['weekday']}'. Must be 'civil' or 'vedic'."
+            );
+        }
+        $params['weekday'] = $mode;
+        return $params;
+    }
+
     // ─── Jaimini (#72-75, #236) ──────────────────────────────────
 
     /**
-     * #72 Jaimini Planetary Positions
+     * #72 Jaimini Planetary Positions (v2: nakshatra spellings Mrigashira, Shravan).
+     * Only planetary-positions has a v2; padas and karakamsha-lagna stay on v1.
      * @param array Birth params: full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan
      */
     public function jaiminiPlanetaryPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/jaimini-astrology/planetary-positions', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/jaimini-astrology/planetary-positions', $params);
     }
 
     /**
@@ -75,29 +97,29 @@ class KundliApi
     // ─── Sub Planets (#76-77) ────────────────────────────────────
 
     /**
-     * #76 Sub Planet Positions
+     * #76 Sub Planet Positions (v2: nakshatra spellings Mrigashira, Shravan)
      */
     public function subPlanetPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/sub-planet-positions', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/sub-planet-positions', $params);
     }
 
     /**
-     * #77 Sub Planet Chart
+     * #77 Sub Planet Chart. v1 is the only version: there is no v2 sub-planet-chart (it returns 404).
      */
     public function subPlanetChart(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/sub-planet-chart', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/sub-planet-chart', $params);
     }
 
     // ─── KP System (#78-82) ─────────────────────────────────────
 
     /**
-     * #78 KP Planetary Positions
+     * #78 KP Planetary Positions (v2: nakshatra spellings Mrigashira, Shravan)
      */
     public function kpPlanetaryPositions(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/kp/planetary-positions', $params);
+        return $this->http->post(self::HOST, '/indian-api/v2/kp/planetary-positions', $params);
     }
 
     /**
@@ -285,10 +307,16 @@ class KundliApi
 
     /**
      * #91 Basic Astro Details
+     * 'vaar' is the weekday of birth; with weekday 'vedic' a birth before sunrise
+     * gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function basicAstroDetails(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v3/basic-astro-details', $params);
+        return $this->http->post(self::HOST, '/indian-api/v3/basic-astro-details', self::withWeekday($params));
     }
 
     /**
@@ -375,11 +403,11 @@ class KundliApi
     }
 
     /**
-     * #102 Shadbala
+     * #102 Shadbala (v3: adds ishta_phala and kashta_phala per planet)
      */
     public function shadbala(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v2/shadbala', $params);
+        return $this->http->post(self::HOST, '/indian-api/v3/shadbala', $params);
     }
 
     /**
@@ -568,11 +596,17 @@ class KundliApi
 
     /**
      * #225 Lal Kitab Varshphal Varsha Pravesh
-     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year
+     * @param array Birth params (full_name, day, month, year, hour, min, sec, gender, place, lat, lon, tzone, lan) + varshphal_year (+ optional weekday)
+     * 'weekday' in the response is the day of the Varsha Pravesh moment; with
+     * weekday 'vedic' a moment before sunrise gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function lalKitabVarshphalVarshaPravesh(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/lal-kitab/varshphal/varsha-pravesh', self::withWeekday($params));
     }
 
     /**
@@ -668,18 +702,32 @@ class KundliApi
 
     /**
      * Varshphal Varsha Pravesh.
+     * @param array Birth params + varshphal_year (+ optional weekday)
+     * 'weekday' in the response is the day of the Varsha Pravesh moment; with
+     * weekday 'vedic' a moment before sunrise gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function varshphalVarshaPravesh(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/varsha-pravesh', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/varsha-pravesh', self::withWeekday($params));
     }
 
     /**
      * Varshphal Basic Astro Details.
+     * @param array Birth params + varshphal_year (+ optional weekday)
+     * 'vaar' is the day of the Varsha Pravesh moment; with weekday 'vedic' a
+     * moment before sunrise gets the previous day.
+     * Optional 'weekday': 'civil' (the API default) changes the day at midnight;
+     * 'vedic' changes it at local sunrise, so a moment between midnight and sunrise
+     * belongs to the previous day. Case-insensitive.
+     * @throws \InvalidArgumentException for any other weekday value
      */
     public function varshphalBasicAstroDetails(array $params): array
     {
-        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/basic-astro-details', $params);
+        return $this->http->post(self::HOST, '/indian-api/v1/varshphal/basic-astro-details', self::withWeekday($params));
     }
 
     /**

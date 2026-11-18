@@ -112,6 +112,16 @@ $result = $client->horoscope()->weeklyHoroscope([
     'lan' => 'en',
 ]);
 
+// Chinese Weekly / Monthly / Yearly Horoscope
+// sign is a Chinese animal (rat, ox, tiger, ...); week / month / year is 'current', 'prev' or 'next'.
+$result = $client->horoscope()->chineseWeeklyHoroscope([
+    'sign' => 'rat',
+    'week' => 'current',
+    'tzone' => 5.5,
+]);
+$result = $client->horoscope()->chineseMonthlyHoroscope(['sign' => 'dragon', 'month' => 'current', 'tzone' => 5.5]);
+$result = $client->horoscope()->chineseYearlyHoroscope(['sign' => 'tiger', 'year' => 'current', 'tzone' => 5.5]);
+
 // Yes or No Tarot
 $result = $client->horoscope()->yesOrNoTarot(['lan' => 'en']);
 
@@ -172,6 +182,13 @@ $birthParams = [
 // Basic Astro Details
 $result = $client->indian()->kundli()->basicAstroDetails($birthParams);
 
+// weekday 'vedic' changes the day at sunrise, so a birth before sunrise gets the
+// previous day's vaar ('civil', the default, changes it at midnight). Also accepted by
+// varshphalVarshaPravesh, varshphalBasicAstroDetails and lalKitabVarshphalVarshaPravesh.
+$result = $client->indian()->kundli()->basicAstroDetails(
+    array_merge($birthParams, ['weekday' => 'vedic'])
+);
+
 // Horoscope Chart (D1, D9, etc.)
 $result = $client->indian()->kundli()->horoscopeChart('D1', $birthParams);
 
@@ -227,6 +244,11 @@ $result = $client->indian()->kundli()->planetRemedies(
 );
 ```
 
+> **Endpoint versions changed in v1.19.0** (to match the API docs and the Node SDK):
+> - `subPlanetChart` now calls v1. Before v1.19.0 it called `/indian-api/v2/sub-planet-chart`, which does not exist, so every call failed with a 404.
+> - `jaiminiPlanetaryPositions`, `kpPlanetaryPositions` and `subPlanetPositions` now call v2. The response is the same except two nakshatra spellings: `Mrigshira` is now `Mrigashira` and `Shravana` is now `Shravan`.
+> - `shadbala` now calls v3, which adds `ishta_phala` and `kashta_phala` (one value per planet). Every other field is unchanged.
+
 ### Indian API - Match Making
 
 ```php
@@ -271,6 +293,8 @@ $result = $client->indian()->festival()->findFestival(
     array_merge($festivalParams, ['festival' => 'maha_shivratri'])
 );
 ```
+
+> **`shraavanaFestivals` (and `hinduMonthFestivals('shraavana', ...)`) calls v3 since v1.19.0** (the other eleven months have no v3 and stay on v2). In v2, `hariyaali_teej`, `gayatri_jayanti`, `narali_purnima` and `sanskrit_divas` returned their date under `dates` instead of `date`; v3 fixes those four. `shraavana_somvaar_vrat` and `mangla_gauri_vrat` still use `dates` because they fall on every Monday and Tuesday of the month.
 
 ### Western API - Natal
 
@@ -398,6 +422,16 @@ $result = $client->numerology()->loshuGrid([
     'lan' => 'en',
 ]);
 
+// Business Name Correction: the business name plus its owner's full name and birth date.
+// Suggests up to 3 respellings when a better-aligned number exists (English only, no lan).
+$result = $client->numerology()->businessNameCorrection([
+    'business_name' => 'Sunrise Traders',
+    'full_name' => 'John Doe',
+    'day' => 15,
+    'month' => 6,
+    'year' => 1990,
+]);
+
 // Core Numbers
 $result = $client->numerology()->coreNumbers([
     'full_name' => 'John Doe',
@@ -450,6 +484,61 @@ $first = $result['data']['results'][0];   // latitude 25.41667, longitude 85.166
 // for that date from $first['timezone'] before passing it as tzone.
 // Place data (c) GeoNames (geonames.org), CC BY 4.0: $result['attribution'].
 ```
+
+### Astro Chatbot
+
+Needs an Astro Chatbot plan on your account. Same API key and auth token; the SDK sends
+them as `x-api-key` and `Authorization: Bearer` headers to `ask.divineapi.com`. Every
+conversation belongs to one of your end users: one key has many `user_id`s, each `user_id`
+has many `session_id`s, and the same `session_id` under two `user_id`s is two separate
+sessions.
+
+```php
+$chatbot = $client->chatbot();
+
+// First message of a session: send the birth details once (numbers are fine,
+// the SDK sends them as the strings the chatbot expects)
+$res = $chatbot->chat([
+    'user_id' => 'u_8812', 'session_id' => 's_1', 'message' => 'When will I get a job?',
+    'full_name' => 'Priya Sharma', 'day' => 24, 'month' => 5, 'year' => 1996,
+    'hour' => 14, 'min' => 40, 'gender' => 'female', 'place' => 'New Delhi',
+    'lat' => 28.7041, 'lon' => 77.1025, 'tzone' => 5.5,
+    'depth' => 'standard',          // quick 20 / standard 30 / deep 50 credits
+]);
+echo $res['answer'], ' ', $res['credits_charged'], ' ', $res['credits_remaining'];
+
+// Follow-ups in the same session reuse the stored birth details
+$chatbot->chat(['user_id' => 'u_8812', 'session_id' => 's_1', 'message' => 'And for marriage?',
+    'school' => 'vedic', 'lens' => 'love', 'language' => 'Hindi']);
+
+// Stream the answer: ['delta' => ...] events, then one ['done' => true, ...] receipt
+foreach ($chatbot->chatStream(['user_id' => 'u_8812', 'session_id' => 's_1',
+    'message' => 'What should I focus on this month?']) as $event) {
+    if (isset($event['delta'])) {
+        echo $event['delta'];
+    }
+}
+
+// Daily horoscope for a date (full birth details on every call)
+$chatbot->horoscopePrediction([
+    'user_id' => 'u_8812', 'date' => '2026-10-31',
+    'day' => 24, 'month' => 5, 'year' => 1996, 'hour' => 14, 'min' => 40, 'gender' => 'female',
+    'place' => 'New Delhi', 'lat' => 28.7041, 'lon' => 77.1025, 'tzone' => 5.5,
+]);
+
+$chatbot->sessions(['user_id' => 'u_8812']);                             // code 404 if none yet
+$chatbot->session(['user_id' => 'u_8812', 'session_id' => 's_1']);       // messages + birth_details
+$chatbot->deleteSession(['user_id' => 'u_8812', 'session_id' => 's_1']); // permanent
+$chatbot->balance();   // ['state' => 'active', 'credits_remaining' => ..., 'expires' => 'YYYY-MM-DD']
+```
+
+Other `chat()` options: `length_cap` (short / medium / full), `language` (any language
+name, or `auto`), `school` (western / vedic / kp / lalkitab), `lens` (general / career /
+love / health / money / spiritual), `confidence` (balanced / definitive / careful),
+`sensitivity` (standard / strict), and free text `tone`, `framing`, `assistant_name`,
+`brand_voice`, `sign_off` and `style_notes` (at most 500 characters). Guardrail replies
+and failed requests are not charged. A missing user or session throws a
+`DivineApiException` with code 404, and an out-of-credit account gets code 402.
 
 ## Error Handling
 

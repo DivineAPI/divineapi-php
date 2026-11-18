@@ -89,6 +89,20 @@ class NumerologyApi
     }
 
     /**
+     * Business Name Correction
+     *
+     * Checks business_name against its owner's numbers: full_name and day/month/year are the
+     * owner's name and birth date. data has business_name_number, name_number, life_path_number, birthday_number, business_name_alignment_percentage, target_business_name_number, is_already_aligned, suggested_business_names (up to 3 respellings that reach the target number) and content (heading, description, advice).
+     * The response is English only (the endpoint has no lan).
+     *
+     * @param array{business_name: string, full_name: string, day: int, month: int, year: int} $params
+     */
+    public function businessNameCorrection(array $params): array
+    {
+        return $this->http->post('astroapi-7.divineapi.com', '/numerology/v1/business-name-correction', $params);
+    }
+
+    /**
      * #194 Birthday Number
      */
     public function birthdayNumber(array $params): array
