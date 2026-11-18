@@ -210,7 +210,7 @@ $asked = ['day' => 12, 'month' => 10, 'year' => 2026, 'hour' => 10, 'min' => 30,
 $questions = $client->indian()->kundli()->kpPrashnaInstantQuestions();   // categories + house_hint
 $chart = $client->indian()->kundli()->kpPrashnaChart($asked + ['horary_number' => 100]);   // 1-249
 $ruling = $client->indian()->kundli()->kpPrashnaRulingPlanets($asked);
-$dasha = $client->indian()->kundli()->kpPrashnaDasha($asked);   // full 819-period timeline (~74 KB)
+$dasha = $client->indian()->kundli()->kpPrashnaDasha($asked);   // full 819-period timeline (~68 KB)
 
 // Jaimini Swamsa Chart: the Navamsa (D9) chart with the Karakamsha sign as house 1.
 // Returns atmakaraka, swamsha_sign, lagnamsha_sign and the chart as svg / base64_image.

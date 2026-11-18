@@ -209,7 +209,7 @@ class KundliApi
      *
      * Vimshottari Dasha from the moment the question is asked: current_dasha
      * and dasha_timeline, the full 120-year tree from the current
-     * mahadasha (819 periods, about 74 KB).
+     * mahadasha (819 periods, about 68 KB).
      *
      * @param array Prashna params: day, month, year, hour, min, place, lat, lon, tzone; optional sec (default 0); optional full_name, gender
      */
