@@ -137,8 +137,8 @@ class DivineApi
     }
 
     /**
-     * Location API (1 endpoint, geolocation.divineapi.com)
-     * Place name -> latitude, longitude and timezone.
+     * Location API (3 endpoints, geolocation.divineapi.com)
+     * Place search, the timezone offset on a date, and the service health.
      */
     public function location(): LocationApi
     {

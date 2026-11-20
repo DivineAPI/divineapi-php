@@ -96,7 +96,7 @@ The SDK is organized into modules that mirror the DivineAPI structure:
 | Numerology | `$client->numerology()` |
 | Lifestyle | `$client->lifestyle()` |
 | Calculators | `$client->calculator()` |
-| Location (place search) | `$client->location()` |
+| Location (place search, timezone, health) | `$client->location()` |
 
 ## Usage Examples
 
@@ -479,9 +479,22 @@ $result = $client->calculator()->loveCalculator([
 $result = $client->location()->search(['place' => 'Patna']);
 $first = $result['data']['results'][0];   // latitude 25.41667, longitude 85.16667, timezone "Asia/Kolkata"
 
-// timezone_value is the zone's UTC offset today. For a birth date in a zone with
-// summer time (e.g. America/New_York: -5 in winter, -4 in summer) work out the offset
-// for that date from $first['timezone'] before passing it as tzone.
+// timezone_value in the search is the zone's UTC offset today. For a birth date, ask
+// for the offset that applied then (summer time and historical changes included):
+$tz = $client->location()->timezone([
+    'place_id' => $first['place_id'], 'day' => 15, 'month' => 7, 'year' => 1990, 'hour' => 14, 'min' => 30,
+]);
+$tz['data']['timezone_value'];   // 5.5 -> pass as tzone
+$tz['data']['is_dst'];           // false; 'ambiguous' is true when the local time happened twice
+
+// Instead of place_id: 'lat' + 'lon' (nearest place) or 'timezone' => 'America/New_York'.
+// Leave the date and time out for the current time.
+$client->location()->timezone(['timezone' => 'America/New_York', 'day' => 15, 'month' => 7, 'year' => 1990, 'hour' => 14, 'min' => 30]);
+// -> timezone_value -4 (summer time), utc_datetime "1990-07-15 18:30:00"
+
+// Service health check (no credentials needed, no credits used)
+$client->location()->health()['data']['status'];   // "ok"
+
 // Place data (c) GeoNames (geonames.org), CC BY 4.0: $result['attribution'].
 ```
 

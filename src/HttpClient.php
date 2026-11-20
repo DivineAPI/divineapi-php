@@ -56,6 +56,26 @@ class HttpClient
     }
 
     /**
+     * Send a GET request with no body, e.g. a service health check.
+     *
+     * @param string $host The base host (e.g., 'geolocation.divineapi.com')
+     * @param string $path The endpoint path (e.g., '/health')
+     * @return array Decoded JSON response
+     * @throws DivineApiException
+     * @throws AuthenticationException
+     * @throws ValidationException
+     */
+    public function get(string $host, string $path): array
+    {
+        return $this->send("https://{$host}{$path}", [
+            'headers' => [
+                'Authorization' => 'Bearer ' . $this->authToken,
+                'Accept' => 'application/json',
+            ],
+        ], 'GET');
+    }
+
+    /**
      * POST a JSON body with the API key in an x-api-key header.
      *
      * Used by Reports V2 (/api/v1/reports/generate and /api/v1/western/reports/generate),
@@ -163,10 +183,10 @@ class HttpClient
     /**
      * Send the request and map HTTP failures to SDK exceptions.
      */
-    private function send(string $url, array $options): array
+    private function send(string $url, array $options, string $method = 'POST'): array
     {
         try {
-            $response = $this->client->post($url, $options);
+            $response = $this->client->request($method, $url, $options);
         } catch (GuzzleException $e) {
             throw $this->toException($e);
         }
