@@ -9,7 +9,8 @@ use DivineApi\HttpClient;
 /**
  * Horoscope & Tarot API endpoints (astroapi-5.divineapi.com)
  *
- * Covers: Daily/Weekly/Monthly/Yearly Horoscope, Chinese Horoscope (daily/weekly/monthly/yearly),
+ * Covers: Daily/Weekly/Monthly/Yearly Horoscope, Chinese Horoscope (daily/weekly/monthly/yearly,
+ * top signs of the year),
  * Numerology Horoscope, Tarot, Fortune, Coffee, and various readings.
  */
 class HoroscopeApi
@@ -68,11 +69,13 @@ class HoroscopeApi
 
     /**
      * #5 Chinese Horoscope
-     * @param array{sign: string, h_day: string, tzone: string|float, lan?: string} $params
+     * data has sign, date and prediction. special_info => true adds data.special,
+     * as in chineseWeeklyHoroscope.
+     * @param array{sign: string, h_day: string, tzone: string|float, lan?: string, special_info?: bool|int} $params
      */
     public function chineseHoroscope(array $params): array
     {
-        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope', $params);
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope', self::withSpecialInfo($params));
     }
 
     /**
@@ -81,33 +84,69 @@ class HoroscopeApi
      * rooster, dog, pig). week selects the period: 'current', 'prev', or 'next' (not a date).
      * data has sign, week (e.g. "08 Nov 2026 to 14 Nov 2026") and prediction
      * (growth, health, wealth, career, love, family, fortune).
-     * @param array{sign: string, week: string, tzone: string|float, lan?: string} $params
+     * special_info => true adds data.special: lucky_colors (two colours, each name + hex),
+     * horoscope_percentage (0-100 for growth, health, wealth, career, love, family, luck)
+     * and summary. Off by default, which leaves the response unchanged.
+     * @param array{sign: string, week: string, tzone: string|float, lan?: string, special_info?: bool|int} $params
      */
     public function chineseWeeklyHoroscope(array $params): array
     {
-        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-weekly', $params);
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-weekly', self::withSpecialInfo($params));
     }
 
     /**
      * #31 Chinese Monthly Horoscope
      * month selects the period: 'current', 'prev', or 'next' (not a month number).
-     * data has sign, month (e.g. "November 2026") and prediction, like chineseWeeklyHoroscope.
-     * @param array{sign: string, month: string, tzone: string|float, lan?: string} $params
+     * data has sign, month (e.g. "November 2026") and prediction, like chineseWeeklyHoroscope;
+     * special_info works the same way.
+     * @param array{sign: string, month: string, tzone: string|float, lan?: string, special_info?: bool|int} $params
      */
     public function chineseMonthlyHoroscope(array $params): array
     {
-        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-monthly', $params);
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-monthly', self::withSpecialInfo($params));
     }
 
     /**
      * #32 Chinese Yearly Horoscope
      * year selects the period: 'current', 'prev', or 'next' (not a calendar year).
-     * data has sign, year and prediction, like chineseWeeklyHoroscope.
-     * @param array{sign: string, year: string, tzone: string|float, lan?: string} $params
+     * data has sign, year and prediction, like chineseWeeklyHoroscope; special_info works
+     * the same way.
+     * @param array{sign: string, year: string, tzone: string|float, lan?: string, special_info?: bool|int} $params
      */
     public function chineseYearlyHoroscope(array $params): array
     {
-        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-yearly', $params);
+        return $this->http->post(self::HOST, '/api/v3/chinese-horoscope-yearly', self::withSpecialInfo($params));
+    }
+
+    /**
+     * #246 Chinese Yearly Top Signs
+     * The top 3 Chinese signs of the year in each life area. There is no sign: all twelve
+     * animals are ranked. year selects the period: 'current', 'prev', or 'next'.
+     * data has year (e.g. "2026") and areas, keyed by area (career, health, love, wealth),
+     * each a list of three [rank, sign, reason] entries sorted by rank (1 = best).
+     * A year without a ranking answers success 0, "Data not found.".
+     * @param array{year: string, tzone: string|float, lan?: string} $params
+     */
+    public function chineseYearlyTopSigns(array $params): array
+    {
+        return $this->http->post(self::HOST, '/api/v3/chinese-yearly-top-signs', $params);
+    }
+
+    /**
+     * The Chinese endpoints add data.special only for special_info=1. Sends 1 when it is
+     * on (true or 1) and drops the field otherwise, so a call without it is unchanged.
+     */
+    private static function withSpecialInfo(array $params): array
+    {
+        if (array_key_exists('special_info', $params)) {
+            $value = $params['special_info'];
+            $on = $value === true || (is_scalar($value) && (string) $value === '1');
+            unset($params['special_info']);
+            if ($on) {
+                $params['special_info'] = 1;
+            }
+        }
+        return $params;
     }
 
     /**
