@@ -121,6 +121,14 @@ $result = $client->horoscope()->chineseWeeklyHoroscope([
 ]);
 $result = $client->horoscope()->chineseMonthlyHoroscope(['sign' => 'dragon', 'month' => 'current', 'tzone' => 5.5]);
 $result = $client->horoscope()->chineseYearlyHoroscope(['sign' => 'tiger', 'year' => 'current', 'tzone' => 5.5]);
+// 'special_info' => true on any of the four Chinese calls adds data.special:
+// lucky_colors ([name, hex] x2), horoscope_percentage (growth ... luck, 0-100) and summary.
+$result = $client->horoscope()->chineseYearlyHoroscope(['sign' => 'dog', 'year' => 'current', 'tzone' => 5.5, 'special_info' => true]);
+$result['data']['special']['lucky_colors'][0];   // ['name' => 'Red', 'hex' => '#D7263D']
+
+// Top 3 Chinese signs of the year per area (no sign)
+$result = $client->horoscope()->chineseYearlyTopSigns(['year' => 'current', 'tzone' => 5.5]);
+$result['data']['areas']['career'][0];   // ['rank' => 1, 'sign' => 'Goat', 'reason' => '...']
 
 // Yes or No Tarot
 $result = $client->horoscope()->yesOrNoTarot(['lan' => 'en']);
